@@ -1,0 +1,31 @@
+<table class="table">
+  <theader>
+    <th>
+      name
+    </th>
+    <th>
+      type
+    </th>
+    <th>
+      value
+    </th>
+  </theader>
+  <% for field in @fields: %>
+  <tr>
+    <td>
+      <%= field.name %>
+    </td>
+    <td>
+      <%= field.type %>      
+    </td>
+    <td>
+      <input class="widgetinput" type="text" value="<%= field.val %>"/>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <td>
+      <button class="button setvals">use</button>
+    </td>
+  </tr>
+</table>
