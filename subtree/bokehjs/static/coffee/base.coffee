@@ -688,6 +688,8 @@ locations =
   PandasPivot :['./pandas/pandas', 'pandaspivots']
   PandasDataSource :['./pandas/pandas', 'pandasdatasources']
   PandasPlotSource :['./pandas/pandas', 'pandasplotsources']
+  InputWidget :['./widgets/index', 'inputwidgets']
+
 exports.locations = locations
 
 Collections = (typename) ->

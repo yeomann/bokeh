@@ -6,6 +6,7 @@ import datetime as dt
 
 from ..bbmodel import ContinuumModel, register_type
 from ..data import make_source
+import pandas
 
 class PandasDataSource(ContinuumModel):
     # FIXME: this is a little redundant with pandas_plot_data.py..
@@ -103,13 +104,22 @@ class PandasPivotModel(PandasPlotSource):
                     dp[k] = "%%.%df" % precision.get(k,2) % dp[k]
                 elif isinstance(dp[k], (dt.date, dt.datetime)):
                     dp[k] = dp[k].isoformat()
-        
+                    
+    def computed_column(self, data, column_spec):
+        localvars = dict(**data)
+        localvars['pd'] = pandas
+        result = eval(column_spec['code'], localvars)
+        data[column_spec['name']] = result
+            
     def get_data(self):
         data = super(PandasPivotModel, self).get_data()
         #add counts/selected, so we can compute counts and selections
         #we will pop them off later
+        
         data['_counts'] = np.ones(len(data))
         data['_selected'] = np.zeros(len(data))
+        for column_spec in self.get('computed_columns'):
+            self.computed_column(data, column_spec)
         raw_selected = self.pandassource.get('selected', []) # integer list
         data.ix[raw_selected, '_selected'] = 1
         if self.get('groups') and self.get('agg'):

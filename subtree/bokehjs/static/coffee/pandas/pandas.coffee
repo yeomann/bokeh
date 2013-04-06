@@ -20,6 +20,7 @@ class PandasPivotView extends ContinuumView
     "keyup .pandasgroup" : 'pandasgroup'
     "keyup .pandasoffset" : 'pandasoffset'
     "keyup .pandassize" : 'pandassize'
+    "keyup .computedtxtbox" : 'computedtxtbox'
     "change .pandasagg" : 'pandasagg'
     "click .pandasbeginning" : 'pandasbeginning'
     "click .pandasback" : 'pandasback'
@@ -27,6 +28,22 @@ class PandasPivotView extends ContinuumView
     "click .pandasend" : 'pandasend'
     "click .controlsmore" : 'toggle_more_controls'
     "click .pandascolumn" : 'sort'
+    "click .column_del" : "column_del"
+  column_del : (e) =>
+    name = $(e.currentTarget).attr('name')
+    computed_columns = _.filter(@model.get('computed_columns'), (x) ->
+      return x.name != name
+    )
+    @model.save('computed_columns', computed_columns, {wait : true})
+
+
+  computedtxtbox : (e) =>
+    if e.keyCode == ENTER
+      name = @$('.computedname').val()
+      code = @$('.computedtxtbox').val()
+      computed_columns = (x for x in @mget('computed_columns'))
+      computed_columns.push(name : name, code : code)
+      @model.save('computed_columns', computed_columns, {wait : true})
 
   sort : (e) =>
     colname = $(e.currentTarget).text()
@@ -106,6 +123,7 @@ class PandasPivotView extends ContinuumView
       sort_ascendings[obj['column']] = obj['ascending']
 
     template_data =
+      computed_columns : @mget('computed_columns')
       columns : @mget('columns')
       data : @mget('data')
       groups : groups
@@ -205,6 +223,7 @@ class PandasPivot extends HasParent
     @save()
 
   defaults :
+    computed_columns : []
     path : ''
     sort : []
     groups : []

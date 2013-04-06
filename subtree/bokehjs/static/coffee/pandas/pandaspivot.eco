@@ -44,6 +44,30 @@
         </select>
       </td>
     </tr>
+    <% for computed_column in @computed_columns: %>
+    <tr>
+      <td>
+        <%= computed_column.name %>
+      </td>
+      <td>      
+        <%= computed_column.code %>
+      </td>
+      <td>
+        <a class="column_del" 
+           name="<%= computed_column.name %>" href="#">[delete]</a>
+      </td>
+    </tr>
+    <% end %>
+    <tr>
+      <td colspan="2">
+        <label> Computed Column Name </label>
+        <input type="text" class="computedname"/>        
+      </td>
+      <td colspan="2">
+        <label> value </label>
+        <input type="text" class="computedtxtbox"/>
+      </td>
+    </tr>
   </table>
 </form>
 
