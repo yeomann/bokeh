@@ -84,8 +84,6 @@ class PlotContextView extends ContinuumView
       node = $("<div class='jsp' data-plot_num='#{index}'></div>"  )
       @$el.append(node)
       title = view.model.get('title')
-      node.append($("<textarea class='plottitle'>#{title}</textarea>"))
-      node.append($("<a class='plotclose'>[close]</a>"))
       node.append(view.el)
     _.defer(() =>
       for textarea in @$el.find('.plottitle')

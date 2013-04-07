@@ -2,6 +2,9 @@ base = require("../base")
 template = require("./inputwidgets")
 
 class InputWidgetsView extends base.ContinuumView
+  attributes:
+    class : 'inputwidget'
+
   initialize : (options) ->
     super(options)
     @listenTo(@model, 'change', @render)
