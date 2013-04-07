@@ -1,4 +1,5 @@
 base = require("../base")
+source = require("../datasource")
 ContinuumView = base.ContinuumView
 safebind = base.safebind
 HasParent = base.HasParent
@@ -13,6 +14,11 @@ class PandasPivotView extends ContinuumView
     super(options)
     safebind(this, @model, 'destroy', @remove)
     safebind(this, @model, 'change', @render)
+    @listenTo(@model, 'change:inputwidget', () =>
+      @listenTo(@mget_obj('inputwidget'), 'change', () -> @model.fetch())
+    )
+    if @mget('inputwidget')
+      @listenTo(@mget_obj('inputwidget'), 'change', () -> @model.fetch())
     @controls_hide = true
     @render()
 
@@ -163,11 +169,14 @@ class PandasPlotSources extends Backbone.Collection
   model : PandasPlotSource
 
 
-class PandasPivot extends HasParent
+class PandasPivot extends datasource.ObjectArrayDataSource
   type : 'PandasPivot'
   initialize : (attrs, options)->
     super(attrs, options)
     @throttled_fetch = _.throttle((() => @fetch()), 500)
+
+  getcolumn: (colname) ->
+    return (x[colname] for x in @get('data'))
 
   dinitialize : (attrs, options) =>
     super(attrs, options)
@@ -223,6 +232,7 @@ class PandasPivot extends HasParent
     @save()
 
   defaults :
+    selected : [] #pandas index of selected values
     computed_columns : []
     path : ''
     sort : []

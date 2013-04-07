@@ -27,6 +27,10 @@ class PandasDataSource(ContinuumModel):
             self.data = df
         super(PandasDataSource, self).__init__(typename, **kwargs)
         
+    def set_data(self):
+        if hasattr(self, 'data'):
+            self.set('encoded', base64.b64encode(pickle.dumps(self.data, -1)))
+        
     def ensure_data(self):
         if not hasattr(self, 'data'):
             self.data = pickle.loads(base64.b64decode(self.get('encoded')))
@@ -54,6 +58,10 @@ class PandasPlotSource(ContinuumModel):
                 self.get('pandassource')['id'],
                 include_hidden=True
                 )
+        if not hasattr(self, 'inputwidget') and self.get('inputwidget'):
+            self.inputwidget = self.client.get(self.get('inputwidget')['type'],
+                                               self.get('inputwidget')['id'],
+                                               )
         self.pandassource.ensure_data()
         data = self.pandassource.data
         return data
@@ -86,6 +94,7 @@ class PandasPivotModel(PandasPlotSource):
         'sort' : [],
         'agg' : 'sum',
         'selection' : [],
+        'computed_columns' : [],
         }
     def get_selection(self):
         """computes selection of aggregated data from pandassourceobj
@@ -101,16 +110,27 @@ class PandasPivotModel(PandasPlotSource):
         for dp in jsondata:
             for k in dp:
                 if isinstance(dp[k], float):
-                    dp[k] = "%%.%df" % precision.get(k,2) % dp[k]
+                    pass
+                    #dp[k] = "%%.%df" % precision.get(k,2) % dp[k]
                 elif isinstance(dp[k], (dt.date, dt.datetime)):
                     dp[k] = dp[k].isoformat()
-                    
+    def convert_type(self, inputtype, item):
+        if inputtype == 'int':
+            return int(item)
+        elif inputtype == 'float':
+            return float(item)
+        elif inputtype == 'str':
+            return item
+        
     def computed_column(self, data, column_spec):
         localvars = dict(**data)
+        if hasattr(self, 'inputwidget'):
+            for fld in self.inputwidget.get('fields'):
+                localvars[fld['name']] = self.convert_type(fld['type'], fld['val'])
         localvars['pd'] = pandas
         result = eval(column_spec['code'], localvars)
         data[column_spec['name']] = result
-            
+        
     def get_data(self):
         data = super(PandasPivotModel, self).get_data()
         #add counts/selected, so we can compute counts and selections
@@ -173,7 +193,7 @@ class PandasPivotModel(PandasPlotSource):
         data = make_source(**data)
         self.format_data(data)
         
-        self.set('selected', selected)
+        #self.set('selected', selected)
         self.set('data', data)
         self.set('columns', columns)
         self.set('counts', counts)

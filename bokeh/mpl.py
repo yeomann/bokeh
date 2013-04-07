@@ -37,6 +37,11 @@ class BokehMPLBase(object):
         if self.plotclient.bbclient:
             self.plotclient.bbclient.upsert_all(self.allmodels())
             
+    def pull(self):
+        if self.plotclient.bbclient:
+            for m in self.allmodels():
+                m.pull()
+                
     def _repr_html_(self):
         html = self.plotclient.make_html(
             self.allmodels(),
@@ -61,7 +66,17 @@ class BokehMPLBase(object):
                 f.write(html.encode("utf-8"))
         else:
             return html.encode("utf-8")
-
+        
+class InputWidget(BokehMPLBase):
+    topmodel = 'inputwidget'    
+    def __init__(self, inputwidget, plotclient=None):
+        super(InputWidget, self).__init__(inputwidget, plotclient=plotclient)
+        self.inputwidget = inputwidget
+        
+    def allmodels(self):
+        models = [self.inputwidget]
+        return models
+    
 class PandasTable(BokehMPLBase):
     topmodel = 'pivotmodel'
     def __init__(self, pivotmodel, plotclient=None):
@@ -103,7 +118,6 @@ class PandasTable(BokehMPLBase):
     def allmodels(self):
         models = [self.pivotmodel, self.pivotmodel.pandassource]
         return models
-
 
 class GridPlot(BokehMPLBase):
     topmodel = 'gridmodel'
@@ -568,7 +582,14 @@ class PlotClient(object):
                         scatter=scatter
                         )
         return self._plot
-
+    
+    def inputwidget(self, fields):
+        model = self.model('InputWidget', fields=fields)
+        if self.bbclient:
+            self.bbclient.create(model)
+        self.show(model)
+        return InputWidget(model, self)
+    
     def pandastable(self, source, sort=[], groups=[],
                     agg='sum', width=600, offset=0, length=100,
                     height=400, container=None):

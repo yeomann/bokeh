@@ -11,12 +11,12 @@ class InputWidgetsView extends base.ContinuumView
     "click .setvals" : 'setvals'
 
   setvals : () ->
-    fields = (x for x in @mget('fields'))
-    for temp in _.zip(@mget('fields'), @$('.widgetinput'))
+    fields = (_.clone(x) for x in @mget('fields'))
+    for temp in _.zip(fields, @$('.widgetinput'))
       [field, node] = temp
       field['val'] = $(node).val()
-    @set('fields', fields)
-    @save()
+    @mset('fields', fields)
+    @model.save()
 
   render : () ->
     html = template(fields : @mget('fields'))
@@ -24,6 +24,7 @@ class InputWidgetsView extends base.ContinuumView
     return @
 
 class InputWidget extends base.HasParent
+  type : "InputWidget"
   default_view : InputWidgetsView
   defaults :
     fields : [] # {type: sdf, name:sdf}
