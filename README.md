@@ -1,3 +1,7 @@
+WARNING
+=======
+This is a branch from Hugo's fintech 2013 hackathon demo.  The stuff showed in this [video](http://www.youtube.com/watch?v=3TzcdtXPYQg) is pretty experimental, and is also not secure!  because we use eval for the computed columns.
+
 Bokeh 
 =====
 
