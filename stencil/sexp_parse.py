@@ -48,12 +48,12 @@ class Let(AST):
         return 'Let(bindings=%r)' % (self.map.items(),)
 
 class Renderer(AST):
-    def __init__(self, id, *policy):
+    def __init__(self, id, *expr):
         self.id = id
-        self.policy = policy
+        self.expr = expr
 
     def to_yaml(self):
-        return 'Renderer(id=%r, policy=%r)' % (self.id, self.policy)
+        return 'Renderer(id=%r, expr=%r)' % (self.id, self.expr)
 
 class Import(AST):
     def __init__(self, *module):
@@ -69,6 +69,22 @@ class Bind(AST):
     def to_yaml(self):
         return 'Bind(map=%r)' % (self.map.tems())
 
+class Pull(AST):
+    def __init__(self, source, expr):
+        self.source = source
+        self.expr = expr
+
+    def to_yaml(self):
+        return 'Pull(source=%r, expr=%r)' % (self.source, self.expr)
+
+class Push(AST):
+    def __init__(self, schema, expr):
+        self.schema = schema
+        self.expr = expr
+
+    def to_yaml(self):
+        return 'Push(schema=%r, expr=%r)' % (self.schema, self.expr)
+
 #------------------------------------------------------------------------
 # Parser
 #------------------------------------------------------------------------
@@ -82,6 +98,7 @@ tokens = {
     'list'      : List,
     'import'    : Import,
     'bind'      : Bind,
+    'pull'      : Pull,
 }
 
 lexemes = set('()[]"\'\#') | set(whitespace)
@@ -106,9 +123,9 @@ def lex(sexp):
 
     while i < length:
         c = sexp[i]
-        reading = type(stack[-1])
+        active = type(stack[-1])
 
-        if reading == list:
+        if active == list:
             # sexp open paren
             if c == '(':
                 stack.append([])
@@ -134,7 +151,7 @@ def lex(sexp):
             else:
                 stack.append((c,))
 
-        elif reading == str:
+        elif active == str:
 
             # string literal
             if c == '"':
@@ -151,7 +168,7 @@ def lex(sexp):
             else:
                 stack[-1] += c
 
-        elif reading == tuple:
+        elif active == tuple:
             if c in lexemes:
                 token = stack.pop()
 
