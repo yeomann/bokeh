@@ -1,4 +1,3 @@
-import re
 import pprint as pp
 from ast import AST
 
@@ -33,10 +32,12 @@ class Fields(AST):
 
 class Let(AST):
     def __init__(self, *bindings):
-        self.map = dict((a,b) for a, _, b in bindings)
+        binders = bindings[0:-2]
+        body = bindings[-1]
+        self.map = dict((a,b) for a, _, b in binders)
 
     def to_yaml(self):
-        return 'Let(id=%r, policy=%r)' % (self.id, self.policy)
+        return 'Let(bindings=%r)' % (self.map.items(),)
 
 class Renderer(AST):
     def __init__(self, id, *policy):
@@ -54,8 +55,8 @@ tokens = {
     'table'     : Table,
     'fields'    : Fields,
     'transform' : Transform,
-    'let'       : Let,
     'renderer'  : Renderer,
+    'let'       : Let,
 }
 
 lexemes = set('()[]"\'\#') | set(whitespace)
@@ -130,7 +131,7 @@ def lex(sexp):
 
                 # stencil token
                 if token[0][0] == '#':
-                    pass
+                    stack[-1].pop()
 
                 continue
 
@@ -161,6 +162,20 @@ source = """
               (fillC : (colorBy colorAtt))
               (shape : 'Circle)))))
 
+(table dataset
+  (fields a b c)
+  (data (init (let (x : (np.arange 100))
+                   (y : (np.sin x))
+                   (z : (np.cos x))
+                ##(a:x, b:y, c:z))))
+  (render table (fields a b c))
+  (render scatter (bind (x: a) (y: b) (color: "orange")))
+  (render scatter (bind (x: a) (y: c) (color: "red")))
+  (render plot (bind (x: a) (y: b) (color: "yellow")))
+  (render plot (bind (x: a) (y: c) (color: "black")))
+  (render plot (bind (x: a) (y: b) (color: "blue"))
+               (bind (x: a) (y: c) (color: "green"))))
+
 """
 
 glyphs = """
@@ -179,6 +194,6 @@ glyphs = """
 """
 
 if __name__ == '__main__':
-    ast = lex(glyphs)
+    ast = lex(source)
     pp.pprint(ast)
     pp.pprint(parse(ast))
