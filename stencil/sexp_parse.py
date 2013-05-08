@@ -30,11 +30,19 @@ class Fields(AST):
     def to_yaml(self):
         return 'Fields(elts=%r)' % (self.elts,)
 
+class List(AST):
+    def __init__(self, *elts):
+        self.elts = list(elts[0])
+
+    def to_yaml(self):
+        return 'List(elts=%r)' % (self.elts,)
+
 class Let(AST):
     def __init__(self, *bindings):
         binders = bindings[0:-2]
         body = bindings[-1]
         self.map = dict((a,b) for a, _, b in binders)
+        self.body = body
 
     def to_yaml(self):
         return 'Let(bindings=%r)' % (self.map.items(),)
@@ -47,6 +55,7 @@ class Renderer(AST):
     def to_yaml(self):
         return 'Renderer(id=%r, policy=%r)' % (self.id, self.policy)
 
+
 #------------------------------------------------------------------------
 # Parser
 #------------------------------------------------------------------------
@@ -57,6 +66,7 @@ tokens = {
     'transform' : Transform,
     'renderer'  : Renderer,
     'let'       : Let,
+    'list'      : List,
 }
 
 lexemes = set('()[]"\'\#') | set(whitespace)
@@ -194,6 +204,6 @@ glyphs = """
 """
 
 if __name__ == '__main__':
-    ast = lex(source)
+    ast = lex(glyphs)
     pp.pprint(ast)
     pp.pprint(parse(ast))
