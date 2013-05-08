@@ -59,9 +59,15 @@ class Import(AST):
     def __init__(self, *module):
         self.module = module
 
+    def to_yaml(self):
+        return 'Import(module=%r)' % (self.module,)
+
 class Bind(AST):
     def __init__(self, *binders):
         self.map = dict((a,b) for a, b in binders)
+
+    def to_yaml(self):
+        return 'Bind(map=%r)' % (self.map.tems())
 
 #------------------------------------------------------------------------
 # Parser
@@ -103,40 +109,56 @@ def lex(sexp):
         reading = type(stack[-1])
 
         if reading == list:
+            # sexp open paren
             if c == '(':
                 stack.append([])
+
+            # sexp close paren
             elif c == ')':
                 stack[-2].append(stack.pop())
                 if stack[-1][0] == ('quote',):
                     stack[-2].append(stack.pop())
+
+            # string literal
             elif c == '"':
                 stack.append('')
+
+            # scheme-style quotation
             elif c == "'":
                 stack.append([('quote',)])
+
+            # noop whitespace
             elif c in whitespace:
                 pass
+
             else:
                 stack.append((c,))
 
         elif reading == str:
+
+            # string literal
             if c == '"':
                 stack[-2].append(stack.pop())
                 if stack[-1][0] == ('quote',):
                     stack[-2].append(stack.pop())
+
+            # string escape
             elif c == '\\':
                 i += 1
                 stack[-1] += sexp[i]
+
+            # name token
             else:
                 stack[-1] += c
 
         elif reading == tuple:
             if c in lexemes:
                 token = stack.pop()
-                #left, right =
 
                 if token[0][0].isdigit():
                     stack[-1].append(eval(token[0]))
 
+                # string token
                 else:
                     stack[-1].append(token[-1])
 
