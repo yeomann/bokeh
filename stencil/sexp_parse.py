@@ -55,6 +55,13 @@ class Renderer(AST):
     def to_yaml(self):
         return 'Renderer(id=%r, policy=%r)' % (self.id, self.policy)
 
+class Import(AST):
+    def __init__(self, *module):
+        self.module = module
+
+class Bind(AST):
+    def __init__(self, *binders):
+        self.map = dict((a,b) for a, b in binders)
 
 #------------------------------------------------------------------------
 # Parser
@@ -67,6 +74,8 @@ tokens = {
     'renderer'  : Renderer,
     'let'       : Let,
     'list'      : List,
+    'import'    : Import,
+    'bind'      : Bind,
 }
 
 lexemes = set('()[]"\'\#') | set(whitespace)
@@ -153,6 +162,9 @@ def lex(sexp):
 
 
 source = """
+(import BokehRuntime)
+(import py-numpy (as np))
+
 (table plot
   (renderer shapes)
   (data
@@ -204,6 +216,6 @@ glyphs = """
 """
 
 if __name__ == '__main__':
-    ast = lex(glyphs)
+    ast = lex(source)
     pp.pprint(ast)
     pp.pprint(parse(ast))
