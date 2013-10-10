@@ -298,7 +298,7 @@ class ColorSpec(DataSpec):
         self.default = default
         self.value = value
         if field_or_value is not None:
-            if self._isconst(field_or_value):
+            if self.isconst(field_or_value):
                 self.value = field_or_value
             else:
                 self.field = field_or_value
@@ -308,12 +308,13 @@ class ColorSpec(DataSpec):
         # look up a default or value
         self._isset = False
 
-    def _isconst(self, arg):
+    @classmethod
+    def isconst(cls, arg):
         """ Returns True if the argument is a literal color.  Check for a
         well-formed hexadecimal color value.
         """
         return isinstance(arg, basestring) and \
-               ((len(arg) == 7 and arg[0] == "#") or arg in self.NAMEDCOLORS)
+               ((len(arg) == 7 and arg[0] == "#") or arg in cls.NAMEDCOLORS)
 
     def _formattuple(self, colortuple):
         if isinstance(colortuple, tuple):
@@ -332,7 +333,7 @@ class ColorSpec(DataSpec):
         attrname = "_" + self.name
         if hasattr(obj, attrname):
             setval = getattr(obj, attrname)
-            if self._isconst(setval) or isinstance(setval, tuple):
+            if self.isconst(setval) or isinstance(setval, tuple):
                 # Fixed color value
                 return setval
             elif isinstance(setval, basestring):
@@ -374,7 +375,7 @@ class ColorSpec(DataSpec):
     def to_dict(self, obj):
         setval = getattr(obj, "_" + self.name, None)
         if setval is not None:
-            if self._isconst(setval):
+            if self.isconst(setval):
                 # Hexadecimal or named color
                 return {"value": setval}
             elif isinstance(setval, tuple):
