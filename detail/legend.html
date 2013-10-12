@@ -1,8 +1,8 @@
 
 
 <a href="gallery.html">back to the gallery</a>
-<a href="detail/candlestick.html">candlestick</a>
-<a href="detail/correlation.html">correlation</a>
+<a href="/detail/candlestick.html">candlestick</a>
+<a href="/detail/correlation.html">correlation</a>
 
 
   <link rel="stylesheet" href="/vendor/pycco/css/pycco.css">
@@ -49,12 +49,56 @@
 
 </pre></div>
     </div>
-    <div class='output'>
-      <script src="9117880a-6e3a-425d-abc4-5f8faf80ef60.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="9117880a-6e3a-425d-abc4-5f8faf80ef60" bokeh_modeltype="Plot" async="true"></script>
-        
+  </div>
+  <div class='clear all'></div>
+
+</div>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">legend</span><span class="p">():</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">output_file</span><span class="p">(</span><span class="s">&quot;legend.html&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;legend.py example&quot;</span><span class="p">)</span>
+
+    <span class="n">hold</span><span class="p">()</span>
+
+    <span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;sin(x)&quot;</span><span class="p">)</span>
+    <span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;2*sin(x)&quot;</span><span class="p">)</span>
+    <span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;3*sin(x)&quot;</span><span class="p">)</span>
+
+    <span class="n">figure</span><span class="p">()</span>
+
+    <span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize,select&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;sin(x)&quot;</span><span class="p">)</span>
+    <span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize,select&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;sin(x)&quot;</span><span class="p">)</span>
+
+    <span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">line_dash</span><span class="o">=</span><span class="s">&quot;4 4&quot;</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;2*sin(x)&quot;</span><span class="p">)</span>
+
+    <span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;3*sin(x)&quot;</span><span class="p">)</span>
+    <span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">fill_color</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;3*sin(x)&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
+
+</pre></div>
     </div>
   </div>
   <div class='clear all'></div>
-</div>
+
+
+
 </body>
+
+<div class='output'>
+  <script src="35f40b59-9fc1-41fb-ad55-d49173e75643.embed.js" bokeh_plottype="embeddata"
+bokeh_modelid="35f40b59-9fc1-41fb-ad55-d49173e75643" bokeh_modeltype="Plot" async="true"></script>
+        
+</div>

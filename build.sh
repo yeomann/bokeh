@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ../Bokeh/
-python exportjs.py
+#python exportjs.py
 cd examples 
 python build_gallery.py  
 cd ../../gh-pages-Bokeh 

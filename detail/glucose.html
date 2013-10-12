@@ -1,8 +1,8 @@
 
 
 <a href="gallery.html">back to the gallery</a>
-<a href="detail/correlation.html">correlation</a>
-<a href="detail/stocks.html">stocks</a>
+<a href="/detail/correlation.html">correlation</a>
+<a href="/detail/stocks.html">stocks</a>
 
 
   <link rel="stylesheet" href="/vendor/pycco/css/pycco.css">
@@ -75,12 +75,82 @@
 
 </pre></div>
     </div>
-    <div class='output'>
-      <script src="glucose.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="glucose" bokeh_modeltype="Plot" async="true"></script>
-        
+  </div>
+  <div class='clear all'></div>
+
+</div>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">glucose</span><span class="p">():</span>
+    <span class="n">output_file</span><span class="p">(</span><span class="s">&quot;glucose.html&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;glucose.py example&quot;</span><span class="p">)</span>
+
+    <span class="n">hold</span><span class="p">()</span>
+
+    <span class="n">dates</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span> <span class="c"># Pandas keeps nanoseconds, need microseconds</span>
+
+    <span class="n">line</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">],</span>
+         <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
+         <span class="n">color</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;glucose&#39;</span><span class="p">)</span>
+    <span class="n">line</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;isig&#39;</span><span class="p">],</span>
+         <span class="n">color</span><span class="o">=</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;isig&#39;</span><span class="p">)</span>
+
+    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Glucose Measurements&quot;</span>
+
+    <span class="n">figure</span><span class="p">()</span>
+
+    <span class="n">day</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="s">&#39;2010-10-06&#39;</span><span class="p">]</span>
+    <span class="n">highs</span> <span class="o">=</span> <span class="n">day</span><span class="p">[</span><span class="n">day</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">]</span>
+    <span class="n">lows</span> <span class="o">=</span> <span class="n">day</span><span class="p">[</span><span class="n">day</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">]</span>
+
+    <span class="n">line</span><span class="p">(</span><span class="n">day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">day</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">],</span>
+         <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
+         <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;gray&quot;</span><span class="p">,</span> <span class="n">line_dash</span><span class="o">=</span><span class="s">&quot;4 4&quot;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+         <span class="n">legend</span><span class="o">=</span><span class="s">&quot;glucose&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">)</span>
+    <span class="n">scatter</span><span class="p">(</span><span class="n">highs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">highs</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">],</span>
+            <span class="n">color</span><span class="o">=</span><span class="s">&#39;tomato&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;high&quot;</span><span class="p">)</span>
+    <span class="n">scatter</span><span class="p">(</span><span class="n">lows</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">lows</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">],</span>
+            <span class="n">color</span><span class="o">=</span><span class="s">&#39;navy&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;low&quot;</span><span class="p">)</span>
+
+    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Glucose Range&quot;</span>
+    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_color</span><span class="o">=</span><span class="bp">None</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;3 6&quot;</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.5</span>
+
+    <span class="n">figure</span><span class="p">()</span>
+
+    <span class="n">data</span><span class="p">[</span><span class="s">&#39;inrange&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">180</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="mf">30.5</span><span class="o">*</span><span class="mi">288</span> <span class="c">#288 is average number of samples in a month</span>
+    <span class="n">inrange</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">rolling_sum</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">inrange</span><span class="p">,</span> <span class="n">window</span><span class="p">)</span>
+    <span class="n">inrange</span> <span class="o">=</span> <span class="n">inrange</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">inrange</span> <span class="o">=</span> <span class="n">inrange</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+    <span class="n">line</span><span class="p">(</span><span class="n">inrange</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">inrange</span><span class="p">,</span>
+         <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
+         <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;navy&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;in-range&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
+         <span class="n">name</span><span class="o">=</span><span class="s">&quot;glucose&quot;</span><span class="p">)</span>
+
+    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Glucose In-Range Rolling Sum&quot;</span>
+
+    <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
+
+</pre></div>
     </div>
   </div>
   <div class='clear all'></div>
-</div>
+
+
+
 </body>
+
+<div class='output'>
+  <script src="glucose.embed.js" bokeh_plottype="embeddata"
+bokeh_modelid="glucose" bokeh_modeltype="Plot" async="true"></script>
+        
+</div>

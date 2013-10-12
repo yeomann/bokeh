@@ -1,8 +1,8 @@
 
 
 <a href="gallery.html">back to the gallery</a>
-<a href="detail/iris.html">iris</a>
-<a href="detail/legend.html">legend</a>
+<a href="/detail/iris.html">iris</a>
+<a href="/detail/legend.html">legend</a>
 
 
   <link rel="stylesheet" href="/vendor/pycco/css/pycco.css">
@@ -58,12 +58,65 @@
 
 </pre></div>
     </div>
-    <div class='output'>
-      <script src="candlestick.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="candlestick" bokeh_modeltype="Plot" async="true"></script>
-        
+  </div>
+  <div class='clear all'></div>
+
+</div>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">candlestick</span><span class="p">():</span>
+    <span class="n">output_file</span><span class="p">(</span><span class="s">&quot;candlestick.html&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;candlestick.py example&quot;</span><span class="p">,</span>
+                <span class="n">js</span><span class="o">=</span><span class="s">&quot;relative&quot;</span><span class="p">,</span> <span class="n">css</span><span class="o">=</span><span class="s">&quot;relative&quot;</span><span class="p">)</span>
+
+    <span class="n">hold</span><span class="p">()</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">MSFT</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">])</span>
+
+    <span class="n">dates</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000000</span>  <span class="c"># source data was in microsec</span>
+    <span class="n">mids</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">open</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">close</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">spans</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">close</span><span class="o">-</span><span class="n">df</span><span class="o">.</span><span class="n">open</span><span class="p">)</span>
+
+    <span class="n">inc</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">close</span> <span class="o">&gt;</span> <span class="n">df</span><span class="o">.</span><span class="n">open</span>
+    <span class="n">dec</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">open</span> <span class="o">&gt;</span> <span class="n">df</span><span class="o">.</span><span class="n">close</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mf">0.7</span>
+
+    <span class="n">segment</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">high</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">low</span><span class="p">,</span>
+            <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s">&#39;#000000&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">&quot;candlestick&quot;</span><span class="p">)</span>
+    <span class="n">rect</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">inc</span><span class="p">],</span> <span class="n">mids</span><span class="p">[</span><span class="n">inc</span><span class="p">],</span> <span class="n">w</span><span class="p">,</span> <span class="n">spans</span><span class="p">[</span><span class="n">inc</span><span class="p">],</span>
+         <span class="n">fill_color</span><span class="o">=</span><span class="s">&quot;#D5E1DD&quot;</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;#000000&quot;</span> <span class="p">)</span>
+    <span class="n">rect</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">dec</span><span class="p">],</span> <span class="n">mids</span><span class="p">[</span><span class="n">dec</span><span class="p">],</span> <span class="n">w</span><span class="p">,</span> <span class="n">spans</span><span class="p">[</span><span class="n">dec</span><span class="p">],</span>
+         <span class="n">fill_color</span><span class="o">=</span><span class="s">&quot;#F2583E&quot;</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;#000000&quot;</span> <span class="p">)</span>
+
+    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;MSFT Candlestick&quot;</span>
+    <span class="n">xaxis</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">major_label_orientation</span> <span class="o">=</span> <span class="n">pi</span><span class="o">/</span><span class="mi">4</span>
+    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
+
+    <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
+
+</pre></div>
     </div>
   </div>
   <div class='clear all'></div>
-</div>
+
+
+
 </body>
+
+<div class='output'>
+  <script src="candlestick.embed.js" bokeh_plottype="embeddata"
+bokeh_modelid="candlestick" bokeh_modeltype="Plot" async="true"></script>
+        
+</div>

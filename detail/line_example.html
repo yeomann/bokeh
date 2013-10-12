@@ -1,8 +1,8 @@
 
 
 <a href="gallery.html">back to the gallery</a>
-<a href="detail/stocks.html">stocks</a>
-<a href="detail/rect_example.html">rect_example</a>
+<a href="/detail/stocks.html">stocks</a>
+<a href="/detail/rect_example.html">rect_example</a>
 
 
   <link rel="stylesheet" href="/vendor/pycco/css/pycco.css">
@@ -35,12 +35,42 @@
 
 </pre></div>
     </div>
-    <div class='output'>
-      <script src="line_example.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="line_example" bokeh_modeltype="Plot" async="true"></script>
-        
+  </div>
+  <div class='clear all'></div>
+
+</div>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">line_example</span><span class="p">():</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="mi">80</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">output_file</span><span class="p">(</span><span class="s">&quot;line.html&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;line.py example&quot;</span><span class="p">)</span>
+
+    <span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#0000FF&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
+         <span class="n">name</span><span class="o">=</span><span class="s">&quot;line_example&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
+
+</pre></div>
     </div>
   </div>
   <div class='clear all'></div>
-</div>
+
+
+
 </body>
+
+<div class='output'>
+  <script src="line_example.embed.js" bokeh_plottype="embeddata"
+bokeh_modelid="line_example" bokeh_modeltype="Plot" async="true"></script>
+        
+</div>
