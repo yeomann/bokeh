@@ -61,9 +61,10 @@
 
     <span class="n">scatter</span><span class="p">(</span><span class="n">aapl_dates</span><span class="p">,</span> <span class="n">aapl</span><span class="p">,</span>
             <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s">&#39;#A6CEE3&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize,embed&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;close&#39;</span><span class="p">)</span>
+            <span class="n">color</span><span class="o">=</span><span class="s">&#39;#A6CEE3&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize,embed&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;close&#39;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">&quot;stocks&quot;</span><span class="p">)</span>
     <span class="n">line</span><span class="p">(</span><span class="n">aapl_dates</span><span class="p">,</span> <span class="n">aapl_avg</span><span class="p">,</span>
-         <span class="n">color</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;avg&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;stocks&quot;</span><span class="p">)</span>
+         <span class="n">color</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;avg&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;stocks2&quot;</span><span class="p">)</span>
 
     <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;AAPL One-Month Average&quot;</span>
     <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
@@ -76,8 +77,8 @@
 </pre></div>
     </div>
     <div class='output'>
-      <script src="stocks.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="stocks" bokeh_modeltype="Plot" async="true"></script>
+      <script src="stocks2.embed.js" bokeh_plottype="embeddata"
+bokeh_modelid="stocks2" bokeh_modeltype="Plot" async="true"></script>
         
     </div>
   </div>
