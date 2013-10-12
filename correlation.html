@@ -1,0 +1,75 @@
+
+
+<a href="gallery.html">back to the gallery</a>
+<a href="legend.html">legend</a>
+<a href="glucose.html">glucose</a>
+
+
+  <link rel="stylesheet" href="/static/vendor/pycco/css/pycco.css">
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>correlation</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">correlation</span><span class="p">():</span>
+    <span class="n">output_file</span><span class="p">(</span><span class="s">&quot;correlation.html&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;correlation.py example&quot;</span><span class="p">)</span>
+
+    <span class="n">hold</span><span class="p">()</span>
+
+    <span class="n">num_points</span> <span class="o">=</span> <span class="mi">300</span>
+
+    <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="mi">24</span><span class="o">*</span><span class="mi">3600</span> <span class="c"># days</span>
+    <span class="n">dates</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="n">num_points</span><span class="o">*</span><span class="n">dt</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
+    <span class="n">acme</span> <span class="o">=</span> <span class="n">cumprod</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_points</span><span class="p">))</span>
+    <span class="n">choam</span> <span class="o">=</span> <span class="n">cumprod</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_points</span><span class="p">))</span>
+
+    <span class="n">line</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">acme</span><span class="p">,</span>
+         <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
+         <span class="n">color</span><span class="o">=</span><span class="s">&#39;#1F78B4&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;ACME&#39;</span><span class="p">)</span>
+    <span class="n">line</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">choam</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;#FB9A99&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;CHOAM&#39;</span><span class="p">)</span>
+
+    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Stock Returns&quot;</span>
+    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
+
+    <span class="n">figure</span><span class="p">()</span>
+
+    <span class="n">scatter</span><span class="p">(</span>
+        <span class="n">acme</span><span class="p">,</span> <span class="n">choam</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s">&#39;#A6CEE3&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;close&#39;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&quot;correlation&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;ACME / CHOAM Correlations&quot;</span>
+    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
+
+    <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
+
+</pre></div>
+    </div>
+    <div class='output'>
+      <script src="correlation.embed.js" bokeh_plottype="embeddata"
+bokeh_modelid="correlation" bokeh_modeltype="Plot" async="true"></script>
+        
+    </div>
+  </div>
+  <div class='clear all'></div>
+</div>
+</body>
