@@ -1,8 +1,19 @@
 
 <link rel="stylesheet" href="../vendor/pycco/css/pycco.css">
-<a href="gallery.html">back to the gallery</a>
-<a href="/detail/glucose.html">glucose</a>
-<a href="/detail/line_example.html">line_example</a>
+
+<style>
+a.prev {float:left;}
+a.up {margin:0 auto 0 auto;  width:30%}
+a.next {float:right;}
+#container { margin-top:15px;}
+</style>
+<div class="bokeh">
+  <div class="navbar"
+       <a class="prev" href="/Bokeh/detail/glucose.html">glucose</a>
+       <a class="up" href="../index.html">back to the gallery</a>
+       <a class="next" href="/Bokeh/detail/line_example.html">line_example</a>
+  </div>
+</div>
 
 
 
@@ -19,7 +30,6 @@
       </div>
       
     </div>
-
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">stocks</span><span class="p">():</span>
 
@@ -80,79 +90,13 @@
   <div class='clear all'></div>
 
 </div>
-  <div class='section' id='section-0'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-0'>#</a>
-      </div>
-      
-    </div>
-
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">stocks</span><span class="p">():</span>
-
-    <span class="n">output_file</span><span class="p">(</span><span class="s">&quot;stocks.html&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;stocks.py example&quot;</span><span class="p">)</span>
-
-    <span class="n">hold</span><span class="p">()</span>
-
-    <span class="n">line</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">AAPL</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">),</span> <span class="n">AAPL</span><span class="p">[</span><span class="s">&#39;adj_close&#39;</span><span class="p">],</span>
-         <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
-         <span class="n">color</span><span class="o">=</span><span class="s">&#39;#A6CEE3&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
-         <span class="n">legend</span><span class="o">=</span><span class="s">&#39;AAPL&#39;</span><span class="p">)</span>
-    <span class="n">line</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">FB</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">),</span> <span class="n">FB</span><span class="p">[</span><span class="s">&#39;adj_close&#39;</span><span class="p">],</span>
-         <span class="n">color</span><span class="o">=</span><span class="s">&#39;#1F78B4&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
-         <span class="n">legend</span><span class="o">=</span><span class="s">&#39;FB&#39;</span><span class="p">)</span>
-    <span class="n">line</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">GOOG</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">),</span> <span class="n">GOOG</span><span class="p">[</span><span class="s">&#39;adj_close&#39;</span><span class="p">],</span>
-          <span class="n">olor</span><span class="o">=</span><span class="s">&#39;#B2DF8A&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
-         <span class="n">legend</span><span class="o">=</span><span class="s">&#39;GOOG&#39;</span><span class="p">)</span>
-    <span class="n">line</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">IBM</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">),</span> <span class="n">IBM</span><span class="p">[</span><span class="s">&#39;adj_close&#39;</span><span class="p">],</span>
-         <span class="n">color</span><span class="o">=</span><span class="s">&#39;#33A02C&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
-         <span class="n">legend</span><span class="o">=</span><span class="s">&#39;IBM&#39;</span><span class="p">)</span>
-    <span class="n">line</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">MSFT</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">),</span> <span class="n">MSFT</span><span class="p">[</span><span class="s">&#39;adj_close&#39;</span><span class="p">],</span>
-         <span class="n">color</span><span class="o">=</span><span class="s">&#39;#FB9A99&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
-         <span class="n">legend</span><span class="o">=</span><span class="s">&#39;MSFT&#39;</span><span class="p">)</span>
-
-    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Stock Closing Prices&quot;</span>
-    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
-    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
-
-    <span class="n">figure</span><span class="p">()</span>
-
-    <span class="n">aapl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">AAPL</span><span class="p">[</span><span class="s">&#39;adj_close&#39;</span><span class="p">])</span>
-    <span class="n">aapl_dates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">AAPL</span><span class="p">[</span><span class="s">&#39;date&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">)</span>
-
-    <span class="n">window_size</span> <span class="o">=</span> <span class="mi">30</span>
-    <span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">window_size</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">window_size</span><span class="p">)</span>
-    <span class="n">aapl_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">aapl</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="s">&#39;same&#39;</span><span class="p">)</span>
-
-    <span class="n">scatter</span><span class="p">(</span><span class="n">aapl_dates</span><span class="p">,</span> <span class="n">aapl</span><span class="p">,</span>
-            <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s">&#39;#A6CEE3&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize,embed&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;close&#39;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s">&quot;stocks&quot;</span><span class="p">)</span>
-    <span class="n">line</span><span class="p">(</span><span class="n">aapl_dates</span><span class="p">,</span> <span class="n">aapl_avg</span><span class="p">,</span>
-         <span class="n">color</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;avg&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;stocks2&quot;</span><span class="p">)</span>
-
-    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;AAPL One-Month Average&quot;</span>
-    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
-    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
-
-    <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
-
-</pre></div>
-    </div>
-  </div>
-  <div class='clear all'></div>
 
 
 
 </body>
 
 <div class='output'>
-  <script src="stocks2.embed.js" bokeh_plottype="embeddata"
+  <script src="/Bokeh/detail/stocks2.embed.js" bokeh_plottype="embeddata"
 bokeh_modelid="stocks2" bokeh_modeltype="Plot" async="true"></script>
         
 </div>

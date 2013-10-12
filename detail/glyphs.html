@@ -1,8 +1,19 @@
 
 <link rel="stylesheet" href="../vendor/pycco/css/pycco.css">
-<a href="gallery.html">back to the gallery</a>
-<a href="/detail/rect_example.html">rect_example</a>
-<a href="/detail/scatter_example.html">scatter_example</a>
+
+<style>
+a.prev {float:left;}
+a.up {margin:0 auto 0 auto;  width:30%}
+a.next {float:right;}
+#container { margin-top:15px;}
+</style>
+<div class="bokeh">
+  <div class="navbar"
+       <a class="prev" href="/Bokeh/detail/rect_example.html">rect_example</a>
+       <a class="up" href="../index.html">back to the gallery</a>
+       <a class="next" href="/Bokeh/detail/scatter_example.html">scatter_example</a>
+  </div>
+</div>
 
 
 
@@ -19,7 +30,6 @@
       </div>
       
     </div>
-
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">glyphs</span><span class="p">():</span>
     <span class="n">N</span> <span class="o">=</span> <span class="mi">9</span>
@@ -76,75 +86,13 @@
   <div class='clear all'></div>
 
 </div>
-  <div class='section' id='section-0'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-0'>#</a>
-      </div>
-      
-    </div>
-
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">glyphs</span><span class="p">():</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="mi">9</span>
-
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
-
-    <span class="n">xpts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-.</span><span class="mi">09</span><span class="p">,</span> <span class="o">-.</span><span class="mi">12</span><span class="p">,</span> <span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="mi">12</span><span class="p">,</span> <span class="o">.</span><span class="mi">09</span><span class="p">])</span>
-    <span class="n">ypts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-.</span><span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="mo">02</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="mo">02</span><span class="p">,</span> <span class="o">-.</span><span class="mi">1</span><span class="p">])</span>
-
-    <span class="n">output_file</span><span class="p">(</span><span class="s">&quot;glyphs.html&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;glyphs.py example&quot;</span><span class="p">)</span>
-
-    <span class="n">annular_wedge</span><span class="p">(</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">4.1</span><span class="p">,</span> 
-        <span class="n">inner_radius_units</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">,</span> <span class="n">outer_radius_units</span> <span class="o">=</span> <span class="s">&quot;screen&quot;</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;annular_wedge&quot;</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s">&quot;glyphs_example&quot;</span><span class="p">)</span>
-    <span class="n">annulus</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">inner_radius_units</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">,</span> <span class="n">outer_radius_units</span> <span class="o">=</span> <span class="s">&quot;screen&quot;</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;annulus&quot;</span><span class="p">)</span>
-    <span class="n">arc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">4.1</span><span class="p">,</span> <span class="n">radius_units</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;arc&quot;</span><span class="p">)</span>
-    <span class="n">bezier</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">x</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> 
-           <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;bezier&quot;</span><span class="p">)</span>
-    <span class="n">circle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">radius_units</span><span class="o">=</span><span class="s">&quot;data&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> 
-           <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;circle&quot;</span><span class="p">)</span>
-    <span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;line&quot;</span><span class="p">)</span>
-    <span class="n">multi_line</span><span class="p">([</span><span class="n">xpts</span><span class="o">+</span><span class="n">xx</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="n">ypts</span><span class="o">+</span><span class="n">yy</span> <span class="k">for</span> <span class="n">yy</span> <span class="ow">in</span> <span class="n">y</span><span class="p">],</span> 
-               <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;multi_line&quot;</span><span class="p">)</span>
-    <span class="n">oval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="n">angle</span><span class="o">=-</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">width_units</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">,</span> <span class="n">height_units</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">,</span>
-         <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;oval&quot;</span><span class="p">)</span>
-    <span class="n">patch</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;patch&quot;</span><span class="p">)</span>
-    <span class="n">patches</span><span class="p">([</span><span class="n">xpts</span><span class="o">+</span><span class="n">xx</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="n">ypts</span><span class="o">+</span><span class="n">yy</span> <span class="k">for</span> <span class="n">yy</span> <span class="ow">in</span> <span class="n">y</span><span class="p">],</span> 
-            <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;patches&quot;</span><span class="p">)</span>
-    <span class="n">quad</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> 
-         <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;quad&quot;</span><span class="p">)</span>
-    <span class="n">quadratic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="mf">0.1</span><span class="p">,</span> 
-              <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;quadratic&quot;</span><span class="p">)</span>
-    <span class="n">ray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;ray&quot;</span><span class="p">)</span>
-    <span class="n">rect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">width_units</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">,</span> <span class="n">height_units</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">,</span>
-         <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;rect&quot;</span><span class="p">)</span>
-    <span class="n">segment</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;segment&quot;</span><span class="p">)</span>
-    <span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s">&quot;sizes&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span>
-           <span class="n">source</span><span class="o">=</span><span class="n">ColumnDataSource</span><span class="p">({</span><span class="s">&quot;sizes&quot;</span><span class="p">:</span> <span class="n">sizes</span><span class="p">}),</span> 
-           <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;square&quot;</span><span class="p">)</span>
-    <span class="n">wedge</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">4.1</span><span class="p">,</span> <span class="n">radius_units</span><span class="o">=</span><span class="s">&quot;screen&quot;</span><span class="p">,</span> 
-          <span class="n">color</span><span class="o">=</span><span class="s">&quot;#8888ee&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;wedge&quot;</span><span class="p">,</span>
-          <span class="n">name</span><span class="o">=</span><span class="s">&quot;glyphs_wedge&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
-
-</pre></div>
-    </div>
-  </div>
-  <div class='clear all'></div>
 
 
 
 </body>
 
 <div class='output'>
-  <script src="glyphs_wedge.embed.js" bokeh_plottype="embeddata"
+  <script src="/Bokeh/detail/glyphs_wedge.embed.js" bokeh_plottype="embeddata"
 bokeh_modelid="glyphs_wedge" bokeh_modeltype="Plot" async="true"></script>
         
 </div>

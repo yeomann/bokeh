@@ -1,8 +1,19 @@
 
 <link rel="stylesheet" href="../vendor/pycco/css/pycco.css">
-<a href="gallery.html">back to the gallery</a>
-<a href="/detail/glyphs.html">glyphs</a>
-<a href=""></a>
+
+<style>
+a.prev {float:left;}
+a.up {margin:0 auto 0 auto;  width:30%}
+a.next {float:right;}
+#container { margin-top:15px;}
+</style>
+<div class="bokeh">
+  <div class="navbar"
+       <a class="prev" href="/Bokeh/detail/glyphs.html">glyphs</a>
+       <a class="up" href="../index.html">back to the gallery</a>
+       <a class="next" href=""></a>
+  </div>
+</div>
 
 
 
@@ -19,7 +30,6 @@
       </div>
       
     </div>
-
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">scatter_example</span><span class="p">():</span>
     <span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
@@ -42,41 +52,13 @@
   <div class='clear all'></div>
 
 </div>
-  <div class='section' id='section-0'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-0'>#</a>
-      </div>
-      
-    </div>
-
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">scatter_example</span><span class="p">():</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
-
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-    <span class="n">output_file</span><span class="p">(</span><span class="s">&quot;scatter.html&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;scatter.py example&quot;</span><span class="p">)</span>
-
-    <span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;#FF00FF&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">)</span>
-    <span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">)</span>
-    <span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;square&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">)</span>
-    <span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;square&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s">&quot;scatter_example&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
-
-</pre></div>
-    </div>
-  </div>
-  <div class='clear all'></div>
 
 
 
 </body>
 
 <div class='output'>
-  <script src="scatter_example.embed.js" bokeh_plottype="embeddata"
+  <script src="/Bokeh/detail/scatter_example.embed.js" bokeh_plottype="embeddata"
 bokeh_modelid="scatter_example" bokeh_modeltype="Plot" async="true"></script>
         
 </div>
