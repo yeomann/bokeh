@@ -29,10 +29,13 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>About bokeh.js</h3>
+        <h3>About Bokeh</h3>
         <p>
-        Bokeh is a platform for rich, interactive visualizations targeting the browser.
-        bokeh.js is a lower level browser plotting library written in coffeescript, targeted by Bokeh for output.
+          Bokeh (pronounced bo-Kay or bo-Kuh) is a Python interactive visualization
+          library for large datasets that natively uses the latest web technologies.
+          Its goal is to provide elegant, concise construction of novel graphics in the
+          style of Protovis/D3, while delivering high-performance interactivity over
+          large data to thin clients.
         </p>
 
         <h3 style="clear:both">Gallery</h3>
@@ -74,10 +77,28 @@
 
         <p>
         <span><img src="images/GrammarGraphicsCover.jpg" style="width: 100px; float:right;" ></span>
-        The conceptual foundations of Bokeh originate from Leland Wilkinson's <a href="http://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448">The Grammar of Graphics</a>.
-        In this framework, all visualizations are built up from graphical primitives whose attributes can be vectorized over different data sources.
-        The <a href="http://ggplot2.org">ggplot</a> package is another system based on the Grammar of Graphics, for the R language.
-        </p>
+
+
+        <p>There are many excellent plotting packages for Python, but they generally
+          do not optimize for the particular needs of statistical plotting (easy
+          faceting, bulk application of aesthetic and visual parameters across
+          categorical variables, pleasing default color palettes for categorical data,
+          etc.).  One of the side goals of Bokeh is to provide a compelling Python
+          equivalent of [ggplot](http://had.co.nz/ggplot/) in R.</p>
+
+        <p>Bokeh has several high-level Python interfaces, including a ggplot-like set of
+          plotting functions, as well as MATLAB-style plotting commands such as
+          scatter(), line(), and the like.  These are called "schema-oriented" renderers,
+          and they are wrappers around a low-level set of Python objects, which drive the
+          Javascript objects in [BokehJS](http://continuumio.github.com/bokehjs/).</p>
+
+        <p>The Python interface can either generate static Javascript for embedding in an
+          HTML file, or output JSON state to be stored in a Redis-backed Plot Server.
+          (Both forms can be embedded in IPython Notebook.) The latter "server-based"
+          mode is very powerful because view state is stored on the server, and provides
+          a much richer level of collaboration in exploratory web-based graphics than is
+          anything else we are aware of.</p>
+
 
         <p style="clear: both;"></p>
 
