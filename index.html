@@ -1,68 +1,98 @@
+<!DOCTYPE html>
+<html>
 
-<style>
-  li { margin:10px 5px;}
-  li a {display:block}
-</style>
-<ul>
-  
-      <li><a href="/Bokeh/detail/iris.html">iris</a>
-        <script src="/Bokeh/detail/iris.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="iris" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-      <li><a href="/Bokeh/detail/candlestick.html">candlestick</a>
-        <script src="/Bokeh/detail/candlestick.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="candlestick" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-      <li><a href="/Bokeh/detail/legend.html">legend</a>
-        <script src="/Bokeh/detail/ad9d2e87-596c-4a5c-a5ac-6f27ee2feee3.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="ad9d2e87-596c-4a5c-a5ac-6f27ee2feee3" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-      <li><a href="/Bokeh/detail/correlation.html">correlation</a>
-        <script src="/Bokeh/detail/correlation.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="correlation" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-      <li><a href="/Bokeh/detail/glucose.html">glucose</a>
-        <script src="/Bokeh/detail/glucose.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="glucose" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-      <li><a href="/Bokeh/detail/stocks.html">stocks</a>
-        <script src="/Bokeh/detail/stocks2.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="stocks2" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-      <li><a href="/Bokeh/detail/line_example.html">line_example</a>
-        <script src="/Bokeh/detail/line_example.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="line_example" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-      <li><a href="/Bokeh/detail/rect_example.html">rect_example</a>
-        <script src="/Bokeh/detail/rect_example4.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="rect_example4" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-      <li><a href="/Bokeh/detail/glyphs.html">glyphs</a>
-        <script src="/Bokeh/detail/glyphs_wedge.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="glyphs_wedge" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-      <li><a href="/Bokeh/detail/scatter_example.html">scatter_example</a>
-        <script src="/Bokeh/detail/scatter_example.embed.js" bokeh_plottype="embeddata"
-bokeh_modelid="scatter_example" bokeh_modeltype="Plot" async="true"></script>
-        
-      </li>
-  
-</ul>
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="bokeh.js : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="http://continuum.github.io/bokehjs/stylesheets/stylesheet.css">
+
+    <title>Bokeh</title>
+
+    <style type="text/css">
+      img.gallery {width: 30%;}
+    </style>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ContinuumIO/Bokeh">View on GitHub</a>
+          <a href="index.html"><h1 id="project_title">Bokeh</h1></a>
+          <h2 id="project_tagline"></h2>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>About bokeh.js</h3>
+        <p>
+        Bokeh is a platform for rich, interactive visualizations targeting the browser.
+        bokeh.js is a lower level browser plotting library written in coffeescript, targeted by Bokeh for output.
+        </p>
+
+        <h3 style="clear:both">Gallery</h3>
+
+        <p>Click on any of the images below to see a live plot.</p>
+
+        <a href="scatter.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/scatter.png" class="gallery" />
+        </a>
+        <a href="lorenz.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/lorenz.png" class="gallery" />
+        </a>
+        <a href="image.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/image.png" class="gallery" />
+        </a>
+        <a href="vector.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/vector.png" class="gallery" />
+        </a>
+        <a href="candle.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/candle.png" class="gallery" />
+        </a>
+        <a href="group.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/grouped.png" class="gallery" />
+        </a>
+        <a href="map.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/map.png" class="gallery" />
+        </a>
+        <a href="stack.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/stacked.png" class="gallery" />
+        </a>
+        <a href="map_overlay.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/map_overlay.png" class="gallery" />
+        </a>
+        <a href="wave.html">
+          <img src="https://raw.github.com/ContinuumIO/bokehjs/master/docs/gallery/wave.png" class="gallery" />
+        </a>
+
+        <h3 style="clear:both">Background</h3>
+
+        <p>
+        <span><img src="images/GrammarGraphicsCover.jpg" style="width: 100px; float:right;" ></span>
+        The conceptual foundations of Bokeh originate from Leland Wilkinson's <a href="http://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448">The Grammar of Graphics</a>.
+        In this framework, all visualizations are built up from graphical primitives whose attributes can be vectorized over different data sources.
+        The <a href="http://ggplot2.org">ggplot</a> package is another system based on the Grammar of Graphics, for the R language.
+        </p>
+
+        <p style="clear: both;"></p>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Bokehjs maintained by <a href="https://github.com/ContinuumIO">ContinuumIO</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+
+  </body>
+</html>
+
