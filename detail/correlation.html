@@ -7,6 +7,7 @@ a.up {margin:0 auto 0 auto;  width:30%}
 a.next {float:right;}
 #container { margin-top:15px;}
 </style>
+<!--
 <div class="bokeh">
   <div class="navbar"
        <a class="prev" href="/Bokeh/detail/legend.html">legend</a>
@@ -15,7 +16,7 @@ a.next {float:right;}
   </div>
 </div>
 
-
+-->
 
 <div id='container'>
   <div id="background"></div>
@@ -44,9 +45,23 @@ a.next {float:right;}
     <span class="n">acme</span> <span class="o">=</span> <span class="n">cumprod</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_points</span><span class="p">))</span>
     <span class="n">choam</span> <span class="o">=</span> <span class="n">cumprod</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_points</span><span class="p">))</span>
 
+
+    <span class="n">scatter</span><span class="p">(</span>
+        <span class="n">acme</span><span class="p">,</span> <span class="n">choam</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s">&#39;#A6CEE3&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;close&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;ACME / CHOAM Correlations&quot;</span>
+    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
+
+    <span class="n">figure</span><span class="p">()</span>
     <span class="n">line</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">acme</span><span class="p">,</span>
          <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
-         <span class="n">color</span><span class="o">=</span><span class="s">&#39;#1F78B4&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;ACME&#39;</span><span class="p">)</span>
+         <span class="n">color</span><span class="o">=</span><span class="s">&#39;#1F78B4&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;ACME&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;correlation&quot;</span><span class="p">)</span>
     <span class="n">line</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">choam</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;#FB9A99&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;CHOAM&#39;</span><span class="p">)</span>
 
     <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Stock Returns&quot;</span>
@@ -55,20 +70,6 @@ a.next {float:right;}
     <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
     <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
 
-    <span class="n">figure</span><span class="p">()</span>
-
-    <span class="n">scatter</span><span class="p">(</span>
-        <span class="n">acme</span><span class="p">,</span> <span class="n">choam</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s">&#39;#A6CEE3&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-        <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&#39;close&#39;</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s">&quot;correlation&quot;</span>
-    <span class="p">)</span>
-
-    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;ACME / CHOAM Correlations&quot;</span>
-    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-    <span class="n">xgrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
-    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-    <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.3</span>
 
     <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
 

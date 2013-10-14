@@ -7,6 +7,7 @@ a.up {margin:0 auto 0 auto;  width:30%}
 a.next {float:right;}
 #container { margin-top:15px;}
 </style>
+<!--
 <div class="bokeh">
   <div class="navbar"
        <a class="prev" href="/Bokeh/detail/correlation.html">correlation</a>
@@ -15,7 +16,7 @@ a.next {float:right;}
   </div>
 </div>
 
-
+-->
 
 <div id='container'>
   <div id="background"></div>
@@ -48,6 +49,22 @@ a.next {float:right;}
 
     <span class="n">figure</span><span class="p">()</span>
 
+    <span class="n">data</span><span class="p">[</span><span class="s">&#39;inrange&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">180</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="mf">30.5</span><span class="o">*</span><span class="mi">288</span> <span class="c">#288 is average number of samples in a month</span>
+    <span class="n">inrange</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">rolling_sum</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">inrange</span><span class="p">,</span> <span class="n">window</span><span class="p">)</span>
+    <span class="n">inrange</span> <span class="o">=</span> <span class="n">inrange</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">inrange</span> <span class="o">=</span> <span class="n">inrange</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+    <span class="n">line</span><span class="p">(</span><span class="n">inrange</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">inrange</span><span class="p">,</span>
+         <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
+         <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;navy&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;in-range&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
+         <span class="n">name</span><span class="o">=</span><span class="s">&quot;glucose2&quot;</span><span class="p">)</span>
+
+    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Glucose In-Range Rolling Sum&quot;</span>
+
+    <span class="n">figure</span><span class="p">()</span>
+
+
     <span class="n">day</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="s">&#39;2010-10-06&#39;</span><span class="p">]</span>
     <span class="n">highs</span> <span class="o">=</span> <span class="n">day</span><span class="p">[</span><span class="n">day</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">]</span>
     <span class="n">lows</span> <span class="o">=</span> <span class="n">day</span><span class="p">[</span><span class="n">day</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">]</span>
@@ -55,7 +72,8 @@ a.next {float:right;}
     <span class="n">line</span><span class="p">(</span><span class="n">day</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">day</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">],</span>
          <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
          <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;gray&quot;</span><span class="p">,</span> <span class="n">line_dash</span><span class="o">=</span><span class="s">&quot;4 4&quot;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-         <span class="n">legend</span><span class="o">=</span><span class="s">&quot;glucose&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">)</span>
+         <span class="n">legend</span><span class="o">=</span><span class="s">&quot;glucose&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
+         <span class="n">name</span><span class="o">=</span><span class="s">&quot;glucose&quot;</span><span class="p">)</span>
     <span class="n">scatter</span><span class="p">(</span><span class="n">highs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">highs</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">],</span>
             <span class="n">color</span><span class="o">=</span><span class="s">&#39;tomato&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;high&quot;</span><span class="p">)</span>
     <span class="n">scatter</span><span class="p">(</span><span class="n">lows</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">lows</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">],</span>
@@ -66,20 +84,7 @@ a.next {float:right;}
     <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_dash</span><span class="o">=</span><span class="s">&quot;3 6&quot;</span>
     <span class="n">ygrid</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid_line_alpha</span><span class="o">=</span><span class="mf">0.5</span>
 
-    <span class="n">figure</span><span class="p">()</span>
 
-    <span class="n">data</span><span class="p">[</span><span class="s">&#39;inrange&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">180</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;glucose&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">80</span><span class="p">)</span>
-    <span class="n">window</span> <span class="o">=</span> <span class="mf">30.5</span><span class="o">*</span><span class="mi">288</span> <span class="c">#288 is average number of samples in a month</span>
-    <span class="n">inrange</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">rolling_sum</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">inrange</span><span class="p">,</span> <span class="n">window</span><span class="p">)</span>
-    <span class="n">inrange</span> <span class="o">=</span> <span class="n">inrange</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-    <span class="n">inrange</span> <span class="o">=</span> <span class="n">inrange</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
-
-    <span class="n">line</span><span class="p">(</span><span class="n">inrange</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">inrange</span><span class="p">,</span>
-         <span class="n">x_axis_type</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
-         <span class="n">line_color</span><span class="o">=</span><span class="s">&quot;navy&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s">&quot;in-range&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s">&quot;pan,zoom,resize&quot;</span><span class="p">,</span>
-         <span class="n">name</span><span class="o">=</span><span class="s">&quot;glucose&quot;</span><span class="p">)</span>
-
-    <span class="n">curplot</span><span class="p">()</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Glucose In-Range Rolling Sum&quot;</span>
 
     <span class="k">return</span> <span class="n">curplot</span><span class="p">()</span>
 
