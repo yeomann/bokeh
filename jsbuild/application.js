@@ -17704,7 +17704,7 @@ _.setdefault = function(obj, key, value){
     };
 
     CircleView.prototype._set_data = function(data) {
-      var d, i, lp, _i, _j, _len, _ref, _results;
+      var i, _i, _ref;
       this.data = data;
       this.x = this.glyph_props.v_select('x', data);
       this.y = this.glyph_props.v_select('y', data);
@@ -17715,16 +17715,21 @@ _.setdefault = function(obj, key, value){
         this.selected_mask[i] = false;
       }
       this.have_new_data = true;
-      this.computed_glyph_props = [];
-      if (this.glyph_props != null) {
-        lp = this.glyph_props.line_properties;
-        _results = [];
-        for (_j = 0, _len = data.length; _j < _len; _j++) {
-          d = data[_j];
-          _results.push(this.computed_glyph_props.push(lp.get_properties(d)));
-        }
-        return _results;
+      if (this.glyph_props) {
+        return this._add_computed_glyph_props(this.glyph_props, this.data);
       }
+    };
+
+    CircleView.prototype._add_computed_glyph_props = function(gp, data) {
+      var d, fp, lp, _i, _len;
+      gp.computed_glyph_props = [];
+      lp = gp.line_properties;
+      fp = gp.fill_properties;
+      for (_i = 0, _len = data.length; _i < _len; _i++) {
+        d = data[_i];
+        gp.computed_glyph_props.push(_.extend(lp.get_properties(d), fp.get_properties(d)));
+      }
+      return gp.data = data;
     };
 
     CircleView.prototype._render = function(plot_view, have_new_mapper_state) {
@@ -17828,12 +17833,11 @@ _.setdefault = function(obj, key, value){
       }
     };
 
-    CircleView.prototype._full_path = function(ctx, glyph_props, use_selection) {
-      var base_properties, i, _i, _ref, _results;
+    CircleView.prototype._full_path2 = function(ctx, glyph_props, use_selection) {
+      var i, _i, _ref, _results;
       if (!glyph_props) {
         glyph_props = this.glyph_props;
       }
-      base_properties = glyph_props.line_properties.base_properties;
       _results = [];
       for (i = _i = 0, _ref = this.sx.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
         if (isNaN(this.sx[i] + this.sy[i] + this.radius[i]) || !this.mask[i]) {
@@ -17855,11 +17859,54 @@ _.setdefault = function(obj, key, value){
           if (use_selection) {
             glyph_props.line_properties.set(ctx, this.data[i]);
           } else {
-            glyph_props.line_properties.apply_properties(ctx, base_properties, this.computed_glyph_props[i]);
-            base_properties = this.computed_glyph_props[i];
+            glyph_props.line_properties.set(ctx, this.data[i]);
           }
+          _results.push(ctx.stroke());
+        } else {
+          _results.push(void 0);
         }
-        _results.push(ctx.stroke());
+      }
+      return _results;
+    };
+
+    CircleView.prototype._full_path = function(ctx, glyph_props, use_selection) {
+      var base_properties, cprop, did_props_change, i, last_properties, _i, _ref, _results;
+      if (!glyph_props) {
+        glyph_props = this.glyph_props;
+      }
+      if (!(glyph_props.computed_glyph_props && glyph_props.data === this.data)) {
+        debugger;
+        this._add_computed_glyph_props(glyph_props, this.data);
+      }
+      last_properties = base_properties = _.extend({}, glyph_props.line_properties.base_properties, glyph_props.fill_properties.base_properties);
+      _results = [];
+      for (i = _i = 0, _ref = this.sx.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        if (isNaN(this.sx[i] + this.sy[i] + this.radius[i]) || !this.mask[i]) {
+          continue;
+        }
+        if (use_selection && !this.selected_mask[i]) {
+          continue;
+        }
+        if (use_selection === false && this.selected_mask[i]) {
+          continue;
+        }
+        cprop = glyph_props.computed_glyph_props[i];
+        did_props_change = _.findWhere([last_properties], cprop);
+        ctx.beginPath();
+        ctx.arc(this.sx[i], this.sy[i], this.radius[i], 0, 2 * Math.PI, false);
+        if (glyph_props.fill_properties.do_fill) {
+          glyph_props.fill_properties.apply_properties(ctx, last_properties, cprop);
+          ctx.fill();
+        }
+        if (glyph_props.line_properties.do_stroke) {
+          if (use_selection) {
+            glyph_props.line_properties.set(ctx, this.data[i]);
+          } else {
+            glyph_props.line_properties.apply_properties(ctx, last_properties, cprop);
+          }
+          ctx.stroke();
+        }
+        _results.push(last_properties = cprop);
       }
       return _results;
     };
@@ -22307,25 +22354,25 @@ _.setdefault = function(obj, key, value){
     }
 
     line_properties.prototype.apply_properties = function(ctx, oldProps, newProps) {
-      if (!oldProps.strokeStyle === newProps.strokeStyle) {
+      if (!(oldProps.strokeStyle === newProps.strokeStyle)) {
         ctx.strokeStyle = newProps.strokeStyle;
       }
-      if (!oldProps.globalAlpha === newProps.globalAlpha) {
+      if (!(oldProps.globalAlpha === newProps.globalAlpha)) {
         ctx.globalAlpha = newProps.globalAlpha;
       }
-      if (!oldProps.lineWidth === newProps.lineWidth) {
+      if (!(oldProps.lineWidth === newProps.lineWidth)) {
         ctx.lineWidth = newProps.lineWidth;
       }
-      if (!oldProps.lineJoin === newProps.lineJoin) {
+      if (!(oldProps.lineJoin === newProps.lineJoin)) {
         ctx.lineJoin = newProps.lineJoin;
       }
-      if (!oldProps.lineCap === newProps.lineCap) {
+      if (!(oldProps.lineCap === newProps.lineCap)) {
         ctx.lineCap = newProps.lineCap;
       }
-      if (!oldProps.lineDash === newProps.lineDash) {
+      if (!(oldProps.lineDash === newProps.lineDash)) {
         ctx.setLineDash(newProps.lineDash);
       }
-      if (!oldProps.lineDashOffset === newProps.lineDashOffset) {
+      if (!(oldProps.lineDashOffset === newProps.lineDashOffset)) {
         return ctx.setLineDashOffset(newProps.lineDashOffset);
       }
     };
@@ -22383,8 +22430,28 @@ _.setdefault = function(obj, key, value){
     }
 
     fill_properties.prototype.set = function(ctx, obj) {
-      ctx.fillStyle = this.select(this.fill_color_name, obj);
-      return ctx.globalAlpha = this.select(this.fill_alpha_name, obj);
+      return this.apply_properties(ctx, this.base_properties, this.get_properties(obj));
+    };
+
+    fill_properties.prototype.apply_properties = function(ctx, oldProps, newProps) {
+      if (!(oldProps.fillStyle === newProps.fillStyle)) {
+        ctx.fillStyle = newProps.fillStyle;
+      }
+      if (!(oldProps.fillGlobalAlpha === newProps.fillGlobalAlpha)) {
+        return ctx.globalAlpha = newProps.fillGlobalAlpha;
+      }
+    };
+
+    fill_properties.prototype.get_properties = function(obj) {
+      return {
+        fillStyle: this.select(this.fill_color_name, obj),
+        fillGlobalAlpha: this.select(this.fill_alpha_name, obj)
+      };
+    };
+
+    fill_properties.prototype.base_properties = {
+      fillStyle: false,
+      fillGlobalAlpha: false
     };
 
     return fill_properties;

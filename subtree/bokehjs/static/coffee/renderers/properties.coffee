@@ -247,19 +247,19 @@ class line_properties extends properties
 
   apply_properties: (ctx, oldProps, newProps) ->
 
-    if not oldProps.strokeStyle == newProps.strokeStyle
+    if not (oldProps.strokeStyle == newProps.strokeStyle)
       ctx.strokeStyle = newProps.strokeStyle
-    if not oldProps.globalAlpha == newProps.globalAlpha
+    if not (oldProps.globalAlpha == newProps.globalAlpha)
       ctx.globalAlpha = newProps.globalAlpha
-    if not oldProps.lineWidth == newProps.lineWidth
+    if not (oldProps.lineWidth == newProps.lineWidth)
       ctx.lineWidth   = newProps.lineWidth
-    if not oldProps.lineJoin == newProps.lineJoin
+    if not (oldProps.lineJoin == newProps.lineJoin)
       ctx.lineJoin    = newProps.lineJoin
-    if not oldProps.lineCap == newProps.lineCap
+    if not (oldProps.lineCap == newProps.lineCap)
       ctx.lineCap     = newProps.lineCap
-    if not oldProps.lineDash == newProps.lineDash
+    if not (oldProps.lineDash == newProps.lineDash)
       ctx.setLineDash(newProps.lineDash)
-    if not oldProps.lineDashOffset == newProps.lineDashOffset
+    if not (oldProps.lineDashOffset == newProps.lineDashOffset)
       ctx.setLineDashOffset(newProps.lineDashOffset)
 
   base_properties: {
@@ -301,10 +301,24 @@ class fill_properties extends properties
       @do_fill = false
 
   set: (ctx, obj) ->
-    ctx.fillStyle   = @select(@fill_color_name, obj)
-    ctx.globalAlpha = @select(@fill_alpha_name, obj)
+    @apply_properties(ctx, @base_properties, @get_properties(obj))
+    #ctx.fillStyle   = @select(@fill_color_name, obj)
+    #ctx.globalAlpha = @select(@fill_alpha_name, obj)
 
-
+  apply_properties: (ctx, oldProps, newProps) ->
+    if not (oldProps.fillStyle == newProps.fillStyle)
+      ctx.fillStyle = newProps.fillStyle
+    if not (oldProps.fillGlobalAlpha == newProps.fillGlobalAlpha)
+      ctx.globalAlpha = newProps.fillGlobalAlpha
+    
+  get_properties:(obj) ->
+    {
+      fillStyle:@select(@fill_color_name, obj),
+      fillGlobalAlpha:@select(@fill_alpha_name, obj)}
+  base_properties: {
+      fillStyle: false,
+      fillGlobalAlpha: false}
+    
 
 class text_properties extends properties
   constructor: (styleprovider, glyphspec, prefix="") ->
