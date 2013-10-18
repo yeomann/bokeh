@@ -132,6 +132,7 @@ class CircleView extends GlyphView
   _full_path: (ctx, glyph_props, use_selection) ->
     if not glyph_props
       glyph_props = @glyph_props
+    base_properties = glyph_props.line_properties.base_properties
     for i in [0..@sx.length-1]
       if isNaN(@sx[i] + @sy[i] + @radius[i]) or not @mask[i]
         continue
@@ -147,10 +148,13 @@ class CircleView extends GlyphView
         ctx.fill()
 
       if glyph_props.line_properties.do_stroke
+
           if use_selection
             glyph_props.line_properties.set(ctx, @data[i])
           else
-            glyph_props.line_properties.apply_properties.apply(ctx, @computed_glyph_props[i])
+            #glyph_props.line_properties.set(ctx, @data[i])
+            glyph_props.line_properties.apply_properties(ctx, base_properties, @computed_glyph_props[i])
+            base_properties = @computed_glyph_props[i]
         ctx.stroke()
 
 

@@ -17829,10 +17829,11 @@ _.setdefault = function(obj, key, value){
     };
 
     CircleView.prototype._full_path = function(ctx, glyph_props, use_selection) {
-      var i, _i, _ref, _results;
+      var base_properties, i, _i, _ref, _results;
       if (!glyph_props) {
         glyph_props = this.glyph_props;
       }
+      base_properties = glyph_props.line_properties.base_properties;
       _results = [];
       for (i = _i = 0, _ref = this.sx.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
         if (isNaN(this.sx[i] + this.sy[i] + this.radius[i]) || !this.mask[i]) {
@@ -17854,7 +17855,9 @@ _.setdefault = function(obj, key, value){
           if (use_selection) {
             glyph_props.line_properties.set(ctx, this.data[i]);
           } else {
-            glyph_props.line_properties.apply_properties.apply(ctx, this.computed_glyph_props[i]);
+            glyph_props.line_properties.set(ctx, this.data[i]);
+            "glyph_props.line_properties.apply_properties(ctx, base_properties, @computed_glyph_props[i])\nbase_properties = @computed_glyph_props[i]";
+
           }
         }
         _results.push(ctx.stroke());
@@ -22294,14 +22297,28 @@ _.setdefault = function(obj, key, value){
       this["enum"](styleprovider, glyphspec, this.line_cap_name, "butt round square");
       this.array(styleprovider, glyphspec, this.line_dash_name);
       this.number(styleprovider, glyphspec, this.line_dash_offset_name);
-      this.apply_properties = function(strokeStyle, globalAlpha, lineWidth, lineJoin, lineCap, lineDash, lineDashOffset) {
-        this.strokeStyle = strokeStyle;
-        this.globalAlpha = globalAlpha;
-        this.lineWidth = lineWidth;
-        this.lineJoin = lineJoin;
-        this.lineCap = lineCap;
-        this.setLineDash(lineDash);
-        return this.setLineDashOffset(lineDashOffset);
+      this.apply_properties = function(ctx, oldProps, newProps) {
+        if (!oldProps.strokeStyle === newProps.strokeStyle) {
+          ctx.strokeStyle = newProps.strokeStyle;
+        }
+        if (!oldProps.globalAlpha === newProps.globalAlpha) {
+          ctx.globalAlpha = newProps.globalAlpha;
+        }
+        if (!oldProps.lineWidth === newProps.lineWidth) {
+          ctx.lineWidth = newProps.lineWidth;
+        }
+        if (!oldProps.lineJoin === newProps.lineJoin) {
+          ctx.lineJoin = newProps.lineJoin;
+        }
+        if (!oldProps.lineCap === newProps.lineCap) {
+          ctx.lineCap = newProps.lineCap;
+        }
+        if (!oldProps.lineDash === newProps.lineDash) {
+          ctx.setLineDash(newProps.lineDash);
+        }
+        if (!oldProps.lineDashOffset === newProps.lineDashOffset) {
+          return ctx.setLineDashOffset(newProps.lineDashOffset);
+        }
       };
       this.do_stroke = true;
       if (!_.isUndefined(this[this.line_color_name].value)) {
@@ -22313,12 +22330,30 @@ _.setdefault = function(obj, key, value){
       }
     }
 
+    line_properties.prototype.base_properties = {
+      strokeStyle: false,
+      gloablAlpha: false,
+      lineWidth: false,
+      lineJoin: false,
+      lineCap: false,
+      lineDash: false,
+      lineDashOffset: false
+    };
+
     line_properties.prototype.get_properties = function(obj) {
-      return [this.select(this.line_color_name, obj), this.select(this.line_alpha_name, obj), this.select(this.line_width_name, obj), this.select(this.line_join_name, obj), this.select(this.line_cap_name, obj), this.select(this.line_dash_name, obj), this.select(this.line_dash_offset_name, obj)];
+      return {
+        strokeStyle: this.select(this.line_color_name, obj),
+        gloablAlpha: this.select(this.line_alpha_name, obj),
+        lineWidth: this.select(this.line_width_name, obj),
+        lineJoin: this.select(this.line_join_name, obj),
+        lineCap: this.select(this.line_cap_name, obj),
+        lineDash: this.select(this.line_dash_name, obj),
+        lineDashOffset: this.select(this.line_dash_offset_name, obj)
+      };
     };
 
     line_properties.prototype.set = function(ctx, obj) {
-      return this.apply_properties.apply(ctx, this.get_properties(obj));
+      return this.apply_properties(ctx, this.base_properties, this.get_properties(obj));
     };
 
     return line_properties;

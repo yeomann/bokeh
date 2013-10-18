@@ -239,15 +239,22 @@ class line_properties extends properties
     @array(styleprovider, glyphspec, @line_dash_name)
     @number(styleprovider, glyphspec, @line_dash_offset_name)
     #I want to be able to call apply(ctx) and have @ be ctx
-    @apply_properties=(strokeStyle, globalAlpha, lineWidth,
-                     lineJoin, lineCap, lineDash, lineDashOffset) ->
-      @strokeStyle = strokeStyle
-      @globalAlpha = globalAlpha
-      @lineWidth   = lineWidth
-      @lineJoin    = lineJoin
-      @lineCap     = lineCap
-      @setLineDash(lineDash)
-      @setLineDashOffset(lineDashOffset)
+    @apply_properties=(ctx, oldProps, newProps) ->
+
+      if not oldProps.strokeStyle == newProps.strokeStyle
+        ctx.strokeStyle = newProps.strokeStyle
+      if not oldProps.globalAlpha == newProps.globalAlpha
+        ctx.globalAlpha = newProps.globalAlpha
+      if not oldProps.lineWidth == newProps.lineWidth
+        ctx.lineWidth   = newProps.lineWidth
+      if not oldProps.lineJoin == newProps.lineJoin
+        ctx.lineJoin    = newProps.lineJoin
+      if not oldProps.lineCap == newProps.lineCap
+        ctx.lineCap     = newProps.lineCap
+      if not oldProps.lineDash == newProps.lineDash
+        ctx.setLineDash(newProps.lineDash)
+      if not oldProps.lineDashOffset == newProps.lineDashOffset
+        ctx.setLineDashOffset(newProps.lineDashOffset)
 
     @do_stroke = true
     if not _.isUndefined(@[@line_color_name].value)
@@ -256,19 +263,28 @@ class line_properties extends properties
     else if _.isNull(@[@line_color_name].default)
       @do_stroke = false
 
-      
+  base_properties: {
+      strokeStyle:false,
+      gloablAlpha:false,
+      lineWidth:false,
+      lineJoin:false,
+      lineCap:false,
+      lineDash:false,
+      lineDashOffset:false}
+
+  
   get_properties:(obj) ->
-    [
-      @select(@line_color_name, obj),
-      @select(@line_alpha_name, obj),
-      @select(@line_width_name, obj),
-      @select(@line_join_name,  obj),
-      @select(@line_cap_name,   obj),
-      @select(@line_dash_name, obj),
-      @select(@line_dash_offset_name, obj)]
+    {
+      strokeStyle:@select(@line_color_name, obj),
+      gloablAlpha:@select(@line_alpha_name, obj),
+      lineWidth:@select(@line_width_name, obj),
+      lineJoin:@select(@line_join_name,  obj),
+      lineCap:@select(@line_cap_name,   obj),
+      lineDash:@select(@line_dash_name, obj),
+      lineDashOffset:@select(@line_dash_offset_name, obj)}
 
   set: (ctx, obj) ->
-    @apply_properties.apply(ctx,@get_properties(obj))
+    @apply_properties(ctx,@base_properties, @get_properties(obj))
 
     # debugger;
     # ctx.strokeStyle = @select(@line_color_name, obj)
