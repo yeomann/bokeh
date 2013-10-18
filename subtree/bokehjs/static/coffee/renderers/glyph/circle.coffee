@@ -161,13 +161,12 @@ class CircleView extends GlyphView
     if not glyph_props
       glyph_props = @glyph_props
     if not (glyph_props.computed_glyph_props and glyph_props.data == @data)
-      debugger;
       @_add_computed_glyph_props(glyph_props, @data)
     last_properties = base_properties = _.extend({},
       glyph_props.line_properties.base_properties,
       glyph_props.fill_properties.base_properties)
 
-    
+    strokes = fills = 0
     for i in [0..@sx.length-1]
       if isNaN(@sx[i] + @sy[i] + @radius[i]) or not @mask[i]
         continue
@@ -177,25 +176,28 @@ class CircleView extends GlyphView
         continue
       cprop = glyph_props.computed_glyph_props[i]
       did_props_change = _.findWhere([last_properties], cprop)
-      ctx.beginPath()      
+      if did_props_change
+        ctx.moveTo(@sx[i], @sy[i])
+        ctx.beginPath()      
       ctx.arc(@sx[i], @sy[i], @radius[i], 0, 2*Math.PI, false)
 
       if glyph_props.fill_properties.do_fill
         #glyph_props.fill_properties.set(ctx, @data[i])
         glyph_props.fill_properties.apply_properties(ctx, last_properties,  cprop)
-
-        ctx.fill()
-        #debugger;
+        if did_props_change
+          ctx.fill()
+          fills += 1
       if glyph_props.line_properties.do_stroke
           if use_selection
             glyph_props.line_properties.set(ctx, @data[i])
 
           else
-            #glyph_props.line_properties.set(ctx, @data[i])
             glyph_props.line_properties.apply_properties(ctx, last_properties, cprop)
-
-          ctx.stroke()
+          if did_props_change
+            ctx.stroke()
+            strokes += 1
       last_properties = cprop
+    #console.log("iterations:#{@sx.length} strokes:#{strokes} fills:#{fills}")
 
   select: (xscreenbounds, yscreenbounds) ->
     xscreenbounds = [@plot_view.view_state.sx_to_device(xscreenbounds[0]),

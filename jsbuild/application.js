@@ -17870,15 +17870,15 @@ _.setdefault = function(obj, key, value){
     };
 
     CircleView.prototype._full_path = function(ctx, glyph_props, use_selection) {
-      var base_properties, cprop, did_props_change, i, last_properties, _i, _ref, _results;
+      var base_properties, cprop, did_props_change, fills, i, last_properties, strokes, _i, _ref, _results;
       if (!glyph_props) {
         glyph_props = this.glyph_props;
       }
       if (!(glyph_props.computed_glyph_props && glyph_props.data === this.data)) {
-        debugger;
         this._add_computed_glyph_props(glyph_props, this.data);
       }
       last_properties = base_properties = _.extend({}, glyph_props.line_properties.base_properties, glyph_props.fill_properties.base_properties);
+      strokes = fills = 0;
       _results = [];
       for (i = _i = 0, _ref = this.sx.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
         if (isNaN(this.sx[i] + this.sy[i] + this.radius[i]) || !this.mask[i]) {
@@ -17892,11 +17892,17 @@ _.setdefault = function(obj, key, value){
         }
         cprop = glyph_props.computed_glyph_props[i];
         did_props_change = _.findWhere([last_properties], cprop);
-        ctx.beginPath();
+        if (did_props_change) {
+          ctx.moveTo(this.sx[i], this.sy[i]);
+          ctx.beginPath();
+        }
         ctx.arc(this.sx[i], this.sy[i], this.radius[i], 0, 2 * Math.PI, false);
         if (glyph_props.fill_properties.do_fill) {
           glyph_props.fill_properties.apply_properties(ctx, last_properties, cprop);
-          ctx.fill();
+          if (did_props_change) {
+            ctx.fill();
+            fills += 1;
+          }
         }
         if (glyph_props.line_properties.do_stroke) {
           if (use_selection) {
@@ -17904,7 +17910,10 @@ _.setdefault = function(obj, key, value){
           } else {
             glyph_props.line_properties.apply_properties(ctx, last_properties, cprop);
           }
-          ctx.stroke();
+          if (did_props_change) {
+            ctx.stroke();
+            strokes += 1;
+          }
         }
         _results.push(last_properties = cprop);
       }
