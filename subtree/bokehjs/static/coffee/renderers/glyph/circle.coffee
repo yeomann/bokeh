@@ -133,29 +133,6 @@ class CircleView extends GlyphView
         ctx.beginPath()
         ctx.arc(@sx[i], @sy[i], @radius[i], 0, 2*Math.PI, false)
         ctx.stroke()
-  _full_path2: (ctx, glyph_props, use_selection) ->
-    if not glyph_props
-      glyph_props = @glyph_props
-    
-    for i in [0..@sx.length-1]
-      if isNaN(@sx[i] + @sy[i] + @radius[i]) or not @mask[i]
-        continue
-      if use_selection and not @selected_mask[i]
-        continue
-      if use_selection == false and @selected_mask[i]
-        continue
-      ctx.beginPath()      
-      ctx.arc(@sx[i], @sy[i], @radius[i], 0, 2*Math.PI, false)
-
-      if glyph_props.fill_properties.do_fill
-        glyph_props.fill_properties.set(ctx, @data[i])
-        ctx.fill()
-      if glyph_props.line_properties.do_stroke
-          if use_selection
-            glyph_props.line_properties.set(ctx, @data[i])
-          else
-            glyph_props.line_properties.set(ctx, @data[i])
-          ctx.stroke()
 
   _full_path: (ctx, glyph_props, use_selection) ->
     if not glyph_props

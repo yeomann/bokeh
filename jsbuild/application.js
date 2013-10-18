@@ -17833,42 +17833,6 @@ _.setdefault = function(obj, key, value){
       }
     };
 
-    CircleView.prototype._full_path2 = function(ctx, glyph_props, use_selection) {
-      var i, _i, _ref, _results;
-      if (!glyph_props) {
-        glyph_props = this.glyph_props;
-      }
-      _results = [];
-      for (i = _i = 0, _ref = this.sx.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        if (isNaN(this.sx[i] + this.sy[i] + this.radius[i]) || !this.mask[i]) {
-          continue;
-        }
-        if (use_selection && !this.selected_mask[i]) {
-          continue;
-        }
-        if (use_selection === false && this.selected_mask[i]) {
-          continue;
-        }
-        ctx.beginPath();
-        ctx.arc(this.sx[i], this.sy[i], this.radius[i], 0, 2 * Math.PI, false);
-        if (glyph_props.fill_properties.do_fill) {
-          glyph_props.fill_properties.set(ctx, this.data[i]);
-          ctx.fill();
-        }
-        if (glyph_props.line_properties.do_stroke) {
-          if (use_selection) {
-            glyph_props.line_properties.set(ctx, this.data[i]);
-          } else {
-            glyph_props.line_properties.set(ctx, this.data[i]);
-          }
-          _results.push(ctx.stroke());
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
-    };
-
     CircleView.prototype._full_path = function(ctx, glyph_props, use_selection) {
       var base_properties, cprop, did_props_change, fills, i, last_properties, strokes, _i, _ref, _results;
       if (!glyph_props) {
@@ -20765,23 +20729,6 @@ _.setdefault = function(obj, key, value){
         ctx.rotate(this.angle[i]);
         this.glyph_props.text_properties.apply_properties(ctx, last_properties, cprop);
         last_properties = cprop;
-        ctx.fillText(this.text[i], 0, 0);
-        ctx.rotate(-this.angle[i]);
-        _results.push(ctx.translate(-this.sx[i], -this.sy[i]));
-      }
-      return _results;
-    };
-
-    TextView.prototype._full_path2 = function(ctx) {
-      var i, _i, _ref, _results;
-      _results = [];
-      for (i = _i = 0, _ref = this.sx.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        if (isNaN(this.sx[i] + this.sy[i] + this.angle[i])) {
-          continue;
-        }
-        ctx.translate(this.sx[i], this.sy[i]);
-        ctx.rotate(this.angle[i]);
-        this.glyph_props.text_properties.set(ctx, this.data[i]);
         ctx.fillText(this.text[i], 0, 0);
         ctx.rotate(-this.angle[i]);
         _results.push(ctx.translate(-this.sx[i], -this.sy[i]));

@@ -77,23 +77,8 @@ class TextView extends GlyphView
       ctx.translate(@sx[i], @sy[i])
       ctx.rotate(@angle[i])
       
-      #@glyph_props.text_properties.set(ctx, @data[i])
       @glyph_props.text_properties.apply_properties(ctx, last_properties, cprop)
       last_properties = cprop
-      ctx.fillText(@text[i], 0, 0)
-
-      ctx.rotate(-@angle[i])
-      ctx.translate(-@sx[i], -@sy[i])
-
-  _full_path2: (ctx) ->
-    for i in [0..@sx.length-1]
-      if isNaN(@sx[i] + @sy[i] + @angle[i])
-        continue
-
-      ctx.translate(@sx[i], @sy[i])
-      ctx.rotate(@angle[i])
-
-      @glyph_props.text_properties.set(ctx, @data[i])
       ctx.fillText(@text[i], 0, 0)
 
       ctx.rotate(-@angle[i])
