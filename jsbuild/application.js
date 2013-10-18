@@ -20701,7 +20701,21 @@ _.setdefault = function(obj, key, value){
         }
         return _results;
       })();
-      return this.text = this.glyph_props.v_select("text", data);
+      this.text = this.glyph_props.v_select("text", data);
+      if (this.glyph_props) {
+        return this._add_computed_glyph_props(this.glyph_props, this.data);
+      }
+    };
+
+    TextView.prototype._add_computed_glyph_props = function(gp, data) {
+      var d, tp, _i, _len;
+      gp.computed_glyph_props = [];
+      tp = gp.text_properties;
+      for (_i = 0, _len = data.length; _i < _len; _i++) {
+        d = data[_i];
+        gp.computed_glyph_props.push(tp.get_properties(d));
+      }
+      return gp.data = data;
     };
 
     TextView.prototype._render = function() {
@@ -20739,6 +20753,26 @@ _.setdefault = function(obj, key, value){
     };
 
     TextView.prototype._full_path = function(ctx) {
+      var cprop, i, last_properties, _i, _ref, _results;
+      last_properties = this.glyph_props.text_properties.base_properties;
+      _results = [];
+      for (i = _i = 0, _ref = this.sx.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        if (isNaN(this.sx[i] + this.sy[i] + this.angle[i])) {
+          continue;
+        }
+        cprop = this.glyph_props.computed_glyph_props[i];
+        ctx.translate(this.sx[i], this.sy[i]);
+        ctx.rotate(this.angle[i]);
+        this.glyph_props.text_properties.apply_properties(ctx, last_properties, cprop);
+        last_properties = cprop;
+        ctx.fillText(this.text[i], 0, 0);
+        ctx.rotate(-this.angle[i]);
+        _results.push(ctx.translate(-this.sx[i], -this.sy[i]));
+      }
+      return _results;
+    };
+
+    TextView.prototype._full_path2 = function(ctx) {
       var i, _i, _ref, _results;
       _results = [];
       for (i = _i = 0, _ref = this.sx.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
@@ -22503,11 +22537,43 @@ _.setdefault = function(obj, key, value){
     };
 
     text_properties.prototype.set = function(ctx, obj) {
-      ctx.font = this.font(obj);
-      ctx.fillStyle = this.select(this.text_color_name, obj);
-      ctx.globalAlpha = this.select(this.text_alpha_name, obj);
-      ctx.textAlign = this.select(this.text_align_name, obj);
-      return ctx.textBaseline = this.select(this.text_baseline_name, obj);
+      return this.apply_properties(ctx, this.base_properties, this.get_properties(obj));
+    };
+
+    text_properties.prototype.apply_properties = function(ctx, oldProps, newProps) {
+      if (!(oldProps.font === newProps.font)) {
+        ctx.font = newProps.font;
+      }
+      if (!(oldProps.textFillStyle === newProps.textFillStyle)) {
+        ctx.fillStyle = newProps.textFillStyle;
+      }
+      if (!(oldProps.textGlobalAlpha === newProps.textGlobalAlpha)) {
+        ctx.globalAlpha = newProps.textGlobalAlpha;
+      }
+      if (!(oldProps.textAlign === newProps.textAlign)) {
+        ctx.textAlign = newProps.textAlign;
+      }
+      if (!(oldProps.textBaseline === newProps.textBaseline)) {
+        return ctx.textBaseline = newProps.textBaseline;
+      }
+    };
+
+    text_properties.prototype.get_properties = function(obj) {
+      return {
+        font: this.font(obj),
+        textFillStyle: this.select(this.text_color_name, obj),
+        textGlobalAlpha: this.select(this.text_alpha_name, obj),
+        textAlign: this.select(this.text_align_name, obj),
+        textBaseline: this.select(this.text_baseline_name, obj)
+      };
+    };
+
+    text_properties.prototype.base_properties = {
+      font: false,
+      textFillStyle: false,
+      textGlobalAlpha: false,
+      textAlign: false,
+      textBaseline: false
     };
 
     return text_properties;

@@ -347,11 +347,38 @@ class text_properties extends properties
     return font
 
   set: (ctx, obj) ->
-    ctx.font         = @font(obj)
-    ctx.fillStyle    = @select(@text_color_name,    obj)
-    ctx.globalAlpha  = @select(@text_alpha_name,    obj)
-    ctx.textAlign    = @select(@text_align_name,    obj)
-    ctx.textBaseline = @select(@text_baseline_name, obj)
+    @apply_properties(ctx, @base_properties, @get_properties(obj))
+    
+    # ctx.font         = @font(obj)
+    # ctx.fillStyle    = @select(@text_color_name,    obj)
+    # ctx.globalAlpha  = @select(@text_alpha_name,    obj)
+    # ctx.textAlign    = @select(@text_align_name,    obj)
+    # ctx.textBaseline = @select(@text_baseline_name, obj)
+  apply_properties: (ctx, oldProps, newProps) ->
+    if not(oldProps.font == newProps.font)
+      ctx.font         = newProps.font
+    if not(oldProps.textFillStyle == newProps.textFillStyle)
+      ctx.fillStyle    = newProps.textFillStyle
+    if not(oldProps.textGlobalAlpha == newProps.textGlobalAlpha)
+      ctx.globalAlpha  = newProps.textGlobalAlpha
+    if not(oldProps.textAlign == newProps.textAlign)
+      ctx.textAlign    = newProps.textAlign
+    if not(oldProps.textBaseline == newProps.textBaseline)
+      ctx.textBaseline = newProps.textBaseline
+
+  get_properties: (obj) ->
+    {
+    font         : @font(obj)
+    textFillStyle    : @select(@text_color_name,    obj),
+    textGlobalAlpha  : @select(@text_alpha_name,    obj),
+    textAlign    : @select(@text_align_name,    obj),
+    textBaseline : @select(@text_baseline_name, obj)}
+  base_properties:     {
+    font         : false,
+    textFillStyle    : false,
+    textGlobalAlpha  : false,
+    textAlign    : false,
+    textBaseline : false}
 
 
 

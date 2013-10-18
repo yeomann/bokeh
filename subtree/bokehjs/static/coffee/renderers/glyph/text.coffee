@@ -29,6 +29,17 @@ class TextView extends GlyphView
     angles = (@glyph_props.select("angle", obj) for obj in data) # TODO deg/rad
     @angle = (-angle for angle in angles)
     @text = @glyph_props.v_select("text", data)
+    if @glyph_props
+      @_add_computed_glyph_props(@glyph_props, @data)
+
+  _add_computed_glyph_props: (gp, data) ->
+    gp.computed_glyph_props = []
+    tp = gp.text_properties
+    for d in data
+      gp.computed_glyph_props.push(tp.get_properties(d))
+    #we need this so that we can verify the computed glyph props are
+    #correct for this dataset
+    gp.data = data
 
   _render: () ->
     [@sx, @sy] = @plot_view.map_to_screen(@x, @glyph_props.x.units, @y, @glyph_props.y.units)
@@ -58,6 +69,23 @@ class TextView extends GlyphView
         ctx.fillText(text[i], @sx[i], @sy[i])
 
   _full_path: (ctx) ->
+    last_properties = @glyph_props.text_properties.base_properties
+    for i in [0..@sx.length-1]
+      if isNaN(@sx[i] + @sy[i] + @angle[i])
+        continue
+      cprop = @glyph_props.computed_glyph_props[i]
+      ctx.translate(@sx[i], @sy[i])
+      ctx.rotate(@angle[i])
+      
+      #@glyph_props.text_properties.set(ctx, @data[i])
+      @glyph_props.text_properties.apply_properties(ctx, last_properties, cprop)
+      last_properties = cprop
+      ctx.fillText(@text[i], 0, 0)
+
+      ctx.rotate(-@angle[i])
+      ctx.translate(-@sx[i], -@sy[i])
+
+  _full_path2: (ctx) ->
     for i in [0..@sx.length-1]
       if isNaN(@sx[i] + @sy[i] + @angle[i])
         continue
