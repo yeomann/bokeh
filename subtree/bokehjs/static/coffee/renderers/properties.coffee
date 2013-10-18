@@ -238,30 +238,29 @@ class line_properties extends properties
     @enum(styleprovider, glyphspec, @line_cap_name, "butt round square")
     @array(styleprovider, glyphspec, @line_dash_name)
     @number(styleprovider, glyphspec, @line_dash_offset_name)
-    #I want to be able to call apply(ctx) and have @ be ctx
-    @apply_properties=(ctx, oldProps, newProps) ->
-
-      if not oldProps.strokeStyle == newProps.strokeStyle
-        ctx.strokeStyle = newProps.strokeStyle
-      if not oldProps.globalAlpha == newProps.globalAlpha
-        ctx.globalAlpha = newProps.globalAlpha
-      if not oldProps.lineWidth == newProps.lineWidth
-        ctx.lineWidth   = newProps.lineWidth
-      if not oldProps.lineJoin == newProps.lineJoin
-        ctx.lineJoin    = newProps.lineJoin
-      if not oldProps.lineCap == newProps.lineCap
-        ctx.lineCap     = newProps.lineCap
-      if not oldProps.lineDash == newProps.lineDash
-        ctx.setLineDash(newProps.lineDash)
-      if not oldProps.lineDashOffset == newProps.lineDashOffset
-        ctx.setLineDashOffset(newProps.lineDashOffset)
-
     @do_stroke = true
     if not _.isUndefined(@[@line_color_name].value)
       if _.isNull(@[@line_color_name].value)
         @do_stroke = false
     else if _.isNull(@[@line_color_name].default)
       @do_stroke = false
+
+  apply_properties: (ctx, oldProps, newProps) ->
+
+    if not oldProps.strokeStyle == newProps.strokeStyle
+      ctx.strokeStyle = newProps.strokeStyle
+    if not oldProps.globalAlpha == newProps.globalAlpha
+      ctx.globalAlpha = newProps.globalAlpha
+    if not oldProps.lineWidth == newProps.lineWidth
+      ctx.lineWidth   = newProps.lineWidth
+    if not oldProps.lineJoin == newProps.lineJoin
+      ctx.lineJoin    = newProps.lineJoin
+    if not oldProps.lineCap == newProps.lineCap
+      ctx.lineCap     = newProps.lineCap
+    if not oldProps.lineDash == newProps.lineDash
+      ctx.setLineDash(newProps.lineDash)
+    if not oldProps.lineDashOffset == newProps.lineDashOffset
+      ctx.setLineDashOffset(newProps.lineDashOffset)
 
   base_properties: {
       strokeStyle:false,
@@ -285,16 +284,6 @@ class line_properties extends properties
 
   set: (ctx, obj) ->
     @apply_properties(ctx,@base_properties, @get_properties(obj))
-
-    # debugger;
-    # ctx.strokeStyle = @select(@line_color_name, obj)
-    # ctx.globalAlpha = @select(@line_alpha_name, obj)
-    # ctx.lineWidth   = @select(@line_width_name, obj)
-    # ctx.lineJoin    = @select(@line_join_name,  obj)
-    # ctx.lineCap     = @select(@line_cap_name,   obj)
-    # ctx.setLineDash(@select(@line_dash_name, obj))
-    # ctx.setLineDashOffset(@select(@line_dash_offset_name, obj))
-
 
 class fill_properties extends properties
   constructor: (styleprovider, glyphspec, prefix="") ->

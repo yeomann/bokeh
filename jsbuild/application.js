@@ -22296,29 +22296,6 @@ _.setdefault = function(obj, key, value){
       this["enum"](styleprovider, glyphspec, this.line_cap_name, "butt round square");
       this.array(styleprovider, glyphspec, this.line_dash_name);
       this.number(styleprovider, glyphspec, this.line_dash_offset_name);
-      this.apply_properties = function(ctx, oldProps, newProps) {
-        if (!oldProps.strokeStyle === newProps.strokeStyle) {
-          ctx.strokeStyle = newProps.strokeStyle;
-        }
-        if (!oldProps.globalAlpha === newProps.globalAlpha) {
-          ctx.globalAlpha = newProps.globalAlpha;
-        }
-        if (!oldProps.lineWidth === newProps.lineWidth) {
-          ctx.lineWidth = newProps.lineWidth;
-        }
-        if (!oldProps.lineJoin === newProps.lineJoin) {
-          ctx.lineJoin = newProps.lineJoin;
-        }
-        if (!oldProps.lineCap === newProps.lineCap) {
-          ctx.lineCap = newProps.lineCap;
-        }
-        if (!oldProps.lineDash === newProps.lineDash) {
-          ctx.setLineDash(newProps.lineDash);
-        }
-        if (!oldProps.lineDashOffset === newProps.lineDashOffset) {
-          return ctx.setLineDashOffset(newProps.lineDashOffset);
-        }
-      };
       this.do_stroke = true;
       if (!_.isUndefined(this[this.line_color_name].value)) {
         if (_.isNull(this[this.line_color_name].value)) {
@@ -22328,6 +22305,30 @@ _.setdefault = function(obj, key, value){
         this.do_stroke = false;
       }
     }
+
+    line_properties.prototype.apply_properties = function(ctx, oldProps, newProps) {
+      if (!oldProps.strokeStyle === newProps.strokeStyle) {
+        ctx.strokeStyle = newProps.strokeStyle;
+      }
+      if (!oldProps.globalAlpha === newProps.globalAlpha) {
+        ctx.globalAlpha = newProps.globalAlpha;
+      }
+      if (!oldProps.lineWidth === newProps.lineWidth) {
+        ctx.lineWidth = newProps.lineWidth;
+      }
+      if (!oldProps.lineJoin === newProps.lineJoin) {
+        ctx.lineJoin = newProps.lineJoin;
+      }
+      if (!oldProps.lineCap === newProps.lineCap) {
+        ctx.lineCap = newProps.lineCap;
+      }
+      if (!oldProps.lineDash === newProps.lineDash) {
+        ctx.setLineDash(newProps.lineDash);
+      }
+      if (!oldProps.lineDashOffset === newProps.lineDashOffset) {
+        return ctx.setLineDashOffset(newProps.lineDashOffset);
+      }
+    };
 
     line_properties.prototype.base_properties = {
       strokeStyle: false,
