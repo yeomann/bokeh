@@ -17855,9 +17855,8 @@ _.setdefault = function(obj, key, value){
           if (use_selection) {
             glyph_props.line_properties.set(ctx, this.data[i]);
           } else {
-            glyph_props.line_properties.set(ctx, this.data[i]);
-            "glyph_props.line_properties.apply_properties(ctx, base_properties, @computed_glyph_props[i])\nbase_properties = @computed_glyph_props[i]";
-
+            glyph_props.line_properties.apply_properties(ctx, base_properties, this.computed_glyph_props[i]);
+            base_properties = this.computed_glyph_props[i];
           }
         }
         _results.push(ctx.stroke());
