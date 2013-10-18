@@ -24,8 +24,10 @@ source = ColumnDataSource(
     )
 )
 
-#xdr = DataRange1d(sources=[source.columns(["petal_length", "petal_width", "sepal_width", "sepal_length"])])
-#ydr = DataRange1d(sources=[source.columns(["petal_length", "petal_width", "sepal_width", "sepal_length"])])
+#xdr = DataRange1d(sources=[
+#    source.columns(["petal_length", "petal_width", "sepal_width", "sepal_length"])])
+#ydr = DataRange1d(sources=[source.columns(
+#    ["petal_length", "petal_width", "sepal_width", "sepal_length"])])
 xdr = Range1d(start=-1, end=9)
 ydr = Range1d(start=-1, end=9)
 
@@ -35,7 +37,8 @@ zoom = ZoomTool(dataranges=[xdr,ydr], dimensions=["x","y"])
 def make_plot(xname, yname, xax=False, yax=False, text=None):
     plot = Plot(
         x_range=xdr, y_range=ydr, data_sources=[source], background_fill="#ffeedd",
-        width=250, height=250, border_fill='white', title="", border_symmetry="", min_border=2)
+        width=250, height=250, border_fill='white', title="", 
+        border_symmetry="", min_border=2)
     objs = []
     if xax:
         xaxis = LinearAxis(plot=plot, dimension=0, location="bottom")
@@ -45,7 +48,8 @@ def make_plot(xname, yname, xax=False, yax=False, text=None):
         objs.append(yaxis)
     xgrid = Grid(plot=plot, dimension=0)
     ygrid = Grid(plot=plot, dimension=1)
-    circle = Circle(x=xname, y=yname, fill_color="color", fill_alpha=0.2, radius=2, line_color="color")
+    circle = Circle(x=xname, y=yname, fill_color="color", 
+                    fill_alpha=0.2, radius=2, line_color="color")
     circle_renderer = GlyphRenderer(
         data_source = source,
         xdata_range = xdr,
@@ -56,8 +60,9 @@ def make_plot(xname, yname, xax=False, yax=False, text=None):
     plot.tools = [pan, zoom]
     if text:
         text = " ".join(text.split('_'))
-        text = Text(x=4, y=4, text=text, angle=pi/4, text_font_style="bold", text_baseline="top",
-                    text_color="#ffaaaa", text_alpha=0.2, text_align="center", text_font_size="28pt")
+        text = Text(x=4, y=4, text=text, angle=pi/4, text_font_style="bold", 
+                    text_baseline="top", text_color="#ffaaaa", text_alpha=0.2, 
+                    text_align="center", text_font_size="28pt")
         text_renderer = GlyphRenderer(
             data_source=source,
             xdata_range = xdr,

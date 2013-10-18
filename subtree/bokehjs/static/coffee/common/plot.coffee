@@ -231,7 +231,8 @@ class PlotView extends ContinuumView
       ctx.is_paused = false
       ctx.xmapper.properties.mapper_state.callbacks.propchange()
       ctx.ymapper.properties.mapper_state.callbacks.propchange()
-      ctx.request_render()
+      #ctx.request_render()
+      ctx.render(true)
 
   build_tools: () ->
     return build_views(@tools, @mget_obj('tools'), @view_options())
@@ -496,6 +497,7 @@ exports.PNGView = PNGView
 exports.plots = new Plots
 window.exercise_panning = ->
   start_time = new Date()
+  """
   _.delay((->
     plot10.update_range({sdx:1, sdy:2, xr:{end:10, start:0}, yr:{start:-3, end:70}})),
     200)
@@ -503,6 +505,10 @@ window.exercise_panning = ->
     plot10.update_range({sdx:1, sdy:2, xr:{end:10, start:0}, yr:{start:-3, end:30}})), 400)
   _.delay((->
     plot10.update_range({sdx:1, sdy:2, xr:{end:20, start:0}, yr:{start:-3, end:30}})), 600)
+  """
+  plot10.update_range({sdx:1, sdy:2, xr:{end:10, start:0}, yr:{start:-3, end:70}})
+  plot10.update_range({sdx:1, sdy:2, xr:{end:10, start:0}, yr:{start:-3, end:30}})
+  plot10.update_range({sdx:1, sdy:2, xr:{end:20, start:0}, yr:{start:-3, end:30}})
   end_time = new Date()
   console.log(end_time - start_time, "ms")
   

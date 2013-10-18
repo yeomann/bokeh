@@ -35,7 +35,7 @@ class CircleView extends GlyphView
     )
     return glyph_props
 
-  _set_data: (@data) ->
+  _set_data: (data) ->
     @x = @glyph_props.v_select('x', data)
     @y = @glyph_props.v_select('y', data)
     @mask = new Uint8Array(data.length)
@@ -44,6 +44,14 @@ class CircleView extends GlyphView
       @mask[i] = true
       @selected_mask[i] = false
     @have_new_data = true
+    
+    @computed_glyph_props = []
+    if @glyph_props?
+      for d in data
+        try
+          @computed_glyph_props.push(@glyph_props.get_properties(d))
+        catch err
+          debugger
 
   _render: (plot_view, have_new_mapper_state=true) ->
     [@sx, @sy] = @plot_view.map_to_screen(@x, @glyph_props.x.units, @y, @glyph_props.y.units)
@@ -122,6 +130,7 @@ class CircleView extends GlyphView
         ctx.arc(@sx[i], @sy[i], @radius[i], 0, 2*Math.PI, false)
         ctx.stroke()
 
+
   _full_path: (ctx, glyph_props, use_selection) ->
     if not glyph_props
       glyph_props = @glyph_props
@@ -140,8 +149,12 @@ class CircleView extends GlyphView
         ctx.fill()
 
       if glyph_props.line_properties.do_stroke
-        glyph_props.line_properties.set(ctx, @data[i])
+          if use_selection
+            glyph_props.line_properties.set(ctx, @data[i])
+          else
+            glyph_props.line_properties.apply_properties(ctx, @computed_glyph_props[i])
         ctx.stroke()
+
 
   select: (xscreenbounds, yscreenbounds) ->
     xscreenbounds = [@plot_view.view_state.sx_to_device(xscreenbounds[0]),
