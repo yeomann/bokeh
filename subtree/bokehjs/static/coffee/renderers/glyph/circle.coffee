@@ -47,16 +47,6 @@ class CircleView extends GlyphView
     if @glyph_props
       @_add_computed_glyph_props(@glyph_props, @data)
     
-  _add_computed_glyph_props: (gp, data) ->
-    gp.computed_glyph_props = []
-    lp = gp.line_properties
-    fp = gp.fill_properties
-    for d in data
-      gp.computed_glyph_props.push(_.extend(lp.get_properties(d), fp.get_properties(d)))
-    #we need this so that we can verify the computed glyph props are
-    #correct for this dataset
-    gp.data = data
-    
   _render: (plot_view, have_new_mapper_state=true) ->
     [@sx, @sy] = @plot_view.map_to_screen(@x, @glyph_props.x.units, @y, @glyph_props.y.units)
 
@@ -133,6 +123,60 @@ class CircleView extends GlyphView
         ctx.beginPath()
         ctx.arc(@sx[i], @sy[i], @radius[i], 0, 2*Math.PI, false)
         ctx.stroke()
+  _add_computed_glyph_props: (gp, data) ->
+    gp.computed_glyph_props = []
+    lp = gp.line_properties
+    fp = gp.fill_properties
+    seen_glyph_props = {}
+    last_glyph_props = {a:3}
+    changed = []
+    for d in data
+      temp_glyph_props = _.extend(lp.get_properties(d), fp.get_properties(d))
+      #glyph_key = _.extend(_.keys(temp_glyph_props), _.values(temp_glyph_props)).sort().join("")
+      #if not _.has(seen_glyph_props, glyph_key)
+      #  seen_glyph_props[glyph_key] = temp_glyph_props
+      #gp.computed_glyph_props.push(seen_glyph_props[glyph_key])
+      gp.computed_glyph_props.push(temp_glyph_props)
+      changed.push(@_is_diff(temp_glyph_props,last_glyph_props))
+      last_glyph_props = temp_glyph_props
+    changed[0] = true
+    for i in [0..changed.length-1]
+      gp.computed_glyph_props[i].changed = changed[i]
+      
+    #we need this so that we can verify the computed glyph props are
+    #correct for this dataset
+    gp.data = data
+
+  _serialize: (obj) ->
+    _.extend(_.keys(obj), _.values(obj)).sort().join("")
+  
+  _diff: (obj1,obj2) ->
+    key_diff = _.difference(_.keys(obj1), _.keys(obj2))
+    if key_diff.length > 0
+      return key_diff
+    common_keys = _.intersection(_.keys(obj1), _.keys(obj2))
+    diff = {}
+    for i in [0..common_keys.length-1]
+      k = common_keys[i]
+      if obj1[k] == obj2[k]
+        continue
+      diff[k] = [obj1[k],obj2[k]]
+    #_.extend(_.keys(obj), _.values(obj)).sort().join("")
+    return diff
+  
+  _is_diff: (obj1,obj2) ->
+    key_diff = _.difference(_.keys(obj1), _.keys(obj2))
+    if key_diff.length > 0
+      return true
+    common_keys = _.intersection(_.keys(obj1), _.keys(obj2))
+    diff = {}
+    for i in [0..common_keys.length-1]
+      k = common_keys[i]
+      if obj1[k] == obj2[k]
+        continue
+      else
+        return true
+    false
 
   _full_path: (ctx, glyph_props, use_selection) ->
     if not glyph_props
@@ -143,7 +187,8 @@ class CircleView extends GlyphView
       glyph_props.line_properties.base_properties,
       glyph_props.fill_properties.base_properties)
 
-    strokes = fills = 0
+    strokes = fills = full_iterations = 0
+    ctx.beginPath()
     for i in [0..@sx.length-1]
       if isNaN(@sx[i] + @sy[i] + @radius[i]) or not @mask[i]
         continue
@@ -151,30 +196,40 @@ class CircleView extends GlyphView
         continue
       if use_selection == false and @selected_mask[i]
         continue
+      full_iterations += 1
       cprop = glyph_props.computed_glyph_props[i]
-      did_props_change = _.findWhere([last_properties], cprop)
+      #did_props_change = !!_.findWhere([last_properties], cprop)
+      #did_props_change = (last_properties == cprop)
+      #did_props_change = !(@_serialize(last_properties) == @_serialize(cprop))
+      #if not (did_props_change == did_props_change2)
+      #  debugger;
+      did_props_change = cprop.changed
       if did_props_change
-        ctx.moveTo(@sx[i], @sy[i])
-        ctx.beginPath()      
-      ctx.arc(@sx[i], @sy[i], @radius[i], 0, 2*Math.PI, false)
-
-      if glyph_props.fill_properties.do_fill
-        #glyph_props.fill_properties.set(ctx, @data[i])
-        glyph_props.fill_properties.apply_properties(ctx, last_properties,  cprop)
-        if did_props_change
+        #console.log(@_diff(last_properties,cprop))
+        if glyph_props.line_properties.do_stroke
+          ctx.stroke()
+          strokes += 1
+        if glyph_props.fill_properties.do_fill
           ctx.fill()
           fills += 1
-      if glyph_props.line_properties.do_stroke
-          if use_selection
-            glyph_props.line_properties.set(ctx, @data[i])
 
-          else
-            glyph_props.line_properties.apply_properties(ctx, last_properties, cprop)
-          if did_props_change
-            ctx.stroke()
-            strokes += 1
+        ctx.beginPath()
+      ctx.moveTo(@sx[i], @sy[i])
+      ctx.arc(@sx[i], @sy[i], @radius[i], 0, 2*Math.PI, false)
+      if glyph_props.fill_properties.do_fill
+        glyph_props.fill_properties.apply_properties(ctx, last_properties,  cprop)
+      if glyph_props.line_properties.do_stroke
+        glyph_props.line_properties.apply_properties(ctx, last_properties, cprop)
       last_properties = cprop
-    #console.log("iterations:#{@sx.length} strokes:#{strokes} fills:#{fills}")
+    if glyph_props.line_properties.do_stroke
+      ctx.stroke()
+      strokes += 1
+    if glyph_props.fill_properties.do_fill
+      ctx.fill()
+      fills += 1
+
+    # console.log(
+    #   "iterations:#{@sx.length} full_iterations:#{full_iterations} strokes:#{strokes} fills:#{fills} ")
 
   select: (xscreenbounds, yscreenbounds) ->
     xscreenbounds = [@plot_view.view_state.sx_to_device(xscreenbounds[0]),

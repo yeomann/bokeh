@@ -10812,6 +10812,13 @@ _.setdefault = function(obj, key, value){
 
     HasProperties.prototype.get = function(prop_name) {
       var computed, getter, prop_spec;
+      if (window.in_render) {
+        if (_.has(window.prop_count, prop_name)) {
+          window.prop_count[prop_name] += 1;
+        } else {
+          window.prop_count[prop_name] = 1;
+        }
+      }
       if (_.has(this.properties, prop_name)) {
         prop_spec = this.properties[prop_name];
         if (prop_spec.use_cache && this.has_cache(prop_name)) {
@@ -11077,6 +11084,8 @@ _.setdefault = function(obj, key, value){
   exports.HasParent = HasParent;
 
   exports.build_views = build_views;
+
+  window.prop_count = {};
 
 }).call(this);
 }, "common/affine": function(exports, require, module) {(function() {
@@ -12821,6 +12830,7 @@ _.setdefault = function(obj, key, value){
     PlotView.prototype.render = function(force) {
       var have_new_mapper_state, hpadding, k, level, pr, renderers, sx, sy, sym, th, title, v, xms, yms, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3;
       PlotView.__super__.render.call(this);
+      window.in_render = true;
       window.render_count += 1;
       this.requested_padding = {
         top: 0,
@@ -12907,8 +12917,9 @@ _.setdefault = function(obj, key, value){
         sx = this.view_state.get('outer_width') / 2;
         sy = th;
         this.title_props.set(this.ctx, {});
-        return this.ctx.fillText(title, sx, sy);
+        this.ctx.fillText(title, sx, sy);
       }
+      return window.in_render = false;
     };
 
     return PlotView;
@@ -17720,18 +17731,6 @@ _.setdefault = function(obj, key, value){
       }
     };
 
-    CircleView.prototype._add_computed_glyph_props = function(gp, data) {
-      var d, fp, lp, _i, _len;
-      gp.computed_glyph_props = [];
-      lp = gp.line_properties;
-      fp = gp.fill_properties;
-      for (_i = 0, _len = data.length; _i < _len; _i++) {
-        d = data[_i];
-        gp.computed_glyph_props.push(_.extend(lp.get_properties(d), fp.get_properties(d)));
-      }
-      return gp.data = data;
-    };
-
     CircleView.prototype._render = function(plot_view, have_new_mapper_state) {
       var ctx, i, idx, oh, ow, props, selected, _i, _j, _len, _ref, _ref1;
       if (have_new_mapper_state == null) {
@@ -17833,8 +17832,73 @@ _.setdefault = function(obj, key, value){
       }
     };
 
+    CircleView.prototype._add_computed_glyph_props = function(gp, data) {
+      var changed, d, fp, i, last_glyph_props, lp, seen_glyph_props, temp_glyph_props, _i, _j, _len, _ref;
+      gp.computed_glyph_props = [];
+      lp = gp.line_properties;
+      fp = gp.fill_properties;
+      seen_glyph_props = {};
+      last_glyph_props = {
+        a: 3
+      };
+      changed = [];
+      for (_i = 0, _len = data.length; _i < _len; _i++) {
+        d = data[_i];
+        temp_glyph_props = _.extend(lp.get_properties(d), fp.get_properties(d));
+        gp.computed_glyph_props.push(temp_glyph_props);
+        changed.push(this._is_diff(temp_glyph_props, last_glyph_props));
+        last_glyph_props = temp_glyph_props;
+      }
+      changed[0] = true;
+      for (i = _j = 0, _ref = changed.length - 1; 0 <= _ref ? _j <= _ref : _j >= _ref; i = 0 <= _ref ? ++_j : --_j) {
+        gp.computed_glyph_props[i].changed = changed[i];
+      }
+      return gp.data = data;
+    };
+
+    CircleView.prototype._serialize = function(obj) {
+      return _.extend(_.keys(obj), _.values(obj)).sort().join("");
+    };
+
+    CircleView.prototype._diff = function(obj1, obj2) {
+      var common_keys, diff, i, k, key_diff, _i, _ref;
+      key_diff = _.difference(_.keys(obj1), _.keys(obj2));
+      if (key_diff.length > 0) {
+        return key_diff;
+      }
+      common_keys = _.intersection(_.keys(obj1), _.keys(obj2));
+      diff = {};
+      for (i = _i = 0, _ref = common_keys.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        k = common_keys[i];
+        if (obj1[k] === obj2[k]) {
+          continue;
+        }
+        diff[k] = [obj1[k], obj2[k]];
+      }
+      return diff;
+    };
+
+    CircleView.prototype._is_diff = function(obj1, obj2) {
+      var common_keys, diff, i, k, key_diff, _i, _ref;
+      key_diff = _.difference(_.keys(obj1), _.keys(obj2));
+      if (key_diff.length > 0) {
+        return true;
+      }
+      common_keys = _.intersection(_.keys(obj1), _.keys(obj2));
+      diff = {};
+      for (i = _i = 0, _ref = common_keys.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        k = common_keys[i];
+        if (obj1[k] === obj2[k]) {
+          continue;
+        } else {
+          return true;
+        }
+      }
+      return false;
+    };
+
     CircleView.prototype._full_path = function(ctx, glyph_props, use_selection) {
-      var base_properties, cprop, did_props_change, fills, i, last_properties, strokes, _i, _ref, _results;
+      var base_properties, cprop, did_props_change, fills, full_iterations, i, last_properties, strokes, _i, _ref;
       if (!glyph_props) {
         glyph_props = this.glyph_props;
       }
@@ -17842,8 +17906,8 @@ _.setdefault = function(obj, key, value){
         this._add_computed_glyph_props(glyph_props, this.data);
       }
       last_properties = base_properties = _.extend({}, glyph_props.line_properties.base_properties, glyph_props.fill_properties.base_properties);
-      strokes = fills = 0;
-      _results = [];
+      strokes = fills = full_iterations = 0;
+      ctx.beginPath();
       for (i = _i = 0, _ref = this.sx.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
         if (isNaN(this.sx[i] + this.sy[i] + this.radius[i]) || !this.mask[i]) {
           continue;
@@ -17854,34 +17918,38 @@ _.setdefault = function(obj, key, value){
         if (use_selection === false && this.selected_mask[i]) {
           continue;
         }
+        full_iterations += 1;
         cprop = glyph_props.computed_glyph_props[i];
-        did_props_change = _.findWhere([last_properties], cprop);
+        did_props_change = cprop.changed;
         if (did_props_change) {
-          ctx.moveTo(this.sx[i], this.sy[i]);
-          ctx.beginPath();
-        }
-        ctx.arc(this.sx[i], this.sy[i], this.radius[i], 0, 2 * Math.PI, false);
-        if (glyph_props.fill_properties.do_fill) {
-          glyph_props.fill_properties.apply_properties(ctx, last_properties, cprop);
-          if (did_props_change) {
-            ctx.fill();
-            fills += 1;
-          }
-        }
-        if (glyph_props.line_properties.do_stroke) {
-          if (use_selection) {
-            glyph_props.line_properties.set(ctx, this.data[i]);
-          } else {
-            glyph_props.line_properties.apply_properties(ctx, last_properties, cprop);
-          }
-          if (did_props_change) {
+          if (glyph_props.line_properties.do_stroke) {
             ctx.stroke();
             strokes += 1;
           }
+          if (glyph_props.fill_properties.do_fill) {
+            ctx.fill();
+            fills += 1;
+          }
+          ctx.beginPath();
         }
-        _results.push(last_properties = cprop);
+        ctx.moveTo(this.sx[i], this.sy[i]);
+        ctx.arc(this.sx[i], this.sy[i], this.radius[i], 0, 2 * Math.PI, false);
+        if (glyph_props.fill_properties.do_fill) {
+          glyph_props.fill_properties.apply_properties(ctx, last_properties, cprop);
+        }
+        if (glyph_props.line_properties.do_stroke) {
+          glyph_props.line_properties.apply_properties(ctx, last_properties, cprop);
+        }
+        last_properties = cprop;
       }
-      return _results;
+      if (glyph_props.line_properties.do_stroke) {
+        ctx.stroke();
+        strokes += 1;
+      }
+      if (glyph_props.fill_properties.do_fill) {
+        ctx.fill();
+        return fills += 1;
+      }
     };
 
     CircleView.prototype.select = function(xscreenbounds, yscreenbounds) {
