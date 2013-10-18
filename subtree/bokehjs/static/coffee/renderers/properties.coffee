@@ -185,6 +185,8 @@ class properties
     if not (attrname of @)
       console.log("requested vector selection of unknown property '#{ attrname }' on objects")
       return
+    if not objs
+      debugger
 
     if @[attrname].typed?
       result = new Float32Array(objs.length)

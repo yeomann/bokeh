@@ -231,8 +231,7 @@ class PlotView extends ContinuumView
       ctx.is_paused = false
       ctx.xmapper.properties.mapper_state.callbacks.propchange()
       ctx.ymapper.properties.mapper_state.callbacks.propchange()
-      #ctx.request_render()
-      ctx.render(true)
+      ctx.request_render()
 
   build_tools: () ->
     return build_views(@tools, @mget_obj('tools'), @view_options())
