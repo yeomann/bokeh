@@ -39,6 +39,8 @@ class SelectionToolView extends tool.ToolView
     #DragEnd: "_selecting",
     deactivated : "_stop_selecting"}
 
+  pause:()->
+    ""
   mouse_coords : (e, x, y) ->
     [x, y] = [@plot_view.view_state.device_to_sx(x),
       @plot_view.view_state.device_to_sy(y)]
