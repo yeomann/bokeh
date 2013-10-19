@@ -12695,8 +12695,8 @@ _.setdefault = function(obj, key, value){
       return [x, y];
     };
 
-    PlotView.prototype.update_range_fast = function(range_info) {
-      "this runs silent updates, then finds all listeners and manually\ntriggers them in one loop previously all listeners would be\ntriggered on the xrange, then all of those same plots would be\ntriggered again on the yrange.  by grouping them together, they\nare triggered only once.\n\nthere are problems with this though.  look at http://localhost:5000/demo/scatter\nin the bokehjs demoserver.  use the zoom tool and notice how the axes actually shrink";
+    PlotView.prototype.update_range = function(range_info) {
+      "this runs silent updates, then finds all listeners and manually\ntriggers them in one loop previously all listeners would be\ntriggered on the xrange, then all of those same plots would be\ntriggered again on the yrange.  by grouping them together, they\nare triggered only once.\n\nthere are problems with this though.  look at http://localhost:5000/demo/scatter\nin the bokehjs demoserver.  use the zoom tool and notice how the axes actually shrink\n\nThis can be simplified, currently I am just calling pause on every object that is listenting to change on the xrange and yrange, calling set, then unpause and requesting render on all of those objects.\n\nthere are also objects listening on change:start and change:end\n\nthere are also listeners on changedep.  there could still be some bugs here\n";
 
       var contexts, ctx, f, listener_fs, uniq_contexts, uniq_listener_fs, _i, _j, _len, _len1, _results;
       contexts = _.pluck(this.x_range._events.change, "ctx");
@@ -12714,30 +12714,19 @@ _.setdefault = function(obj, key, value){
         ctx = uniq_contexts[_i];
         ctx.pause();
       }
-      this.x_range.set(range_info.xr, {
-        silent: true
-      });
-      this.y_range.set(range_info.yr, {
-        silent: true
-      });
+      this.x_range.set(range_info.xr);
+      this.y_range.set(range_info.yr);
       f = uniq_listener_fs[0];
       _results = [];
       for (_j = 0, _len1 = uniq_contexts.length; _j < _len1; _j++) {
         ctx = uniq_contexts[_j];
         ctx.is_paused = false;
-        try {
-          ctx.xmapper.properties.mapper_state.callbacks.propchange();
-          ctx.ymapper.properties.mapper_state.callbacks.propchange();
-        } catch (err) {
-          "somehow some listneres don't have x or ymappers'";
-
-        }
         _results.push(ctx.request_render());
       }
       return _results;
     };
 
-    PlotView.prototype.update_range = function(range_info) {
+    PlotView.prototype.update_range2 = function(range_info) {
       this.x_range.set(range_info.xr);
       return this.y_range.set(range_info.yr);
     };

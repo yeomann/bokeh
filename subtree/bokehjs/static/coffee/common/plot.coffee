@@ -206,7 +206,7 @@ class PlotView extends ContinuumView
 
     return [x, y]
 
-  update_range_fast : (range_info) ->
+  update_range : (range_info) ->
     
     """this runs silent updates, then finds all listeners and manually
     triggers them in one loop previously all listeners would be
@@ -216,6 +216,13 @@ class PlotView extends ContinuumView
 
     there are problems with this though.  look at http://localhost:5000/demo/scatter
     in the bokehjs demoserver.  use the zoom tool and notice how the axes actually shrink
+
+    This can be simplified, currently I am just calling pause on every object that is listenting to change on the xrange and yrange, calling set, then unpause and requesting render on all of those objects.
+
+    there are also objects listening on change:start and change:end
+
+    there are also listeners on changedep.  there could still be some bugs here
+    
          """
     contexts = _.pluck(@x_range._events.change, "ctx")
     contexts = contexts.concat(_.pluck(@y_range._events.change, "ctx"))
@@ -233,19 +240,21 @@ class PlotView extends ContinuumView
     @pause()
     for ctx in uniq_contexts
       ctx.pause()
-    @x_range.set(range_info.xr, {silent:true})
-    @y_range.set(range_info.yr, {silent:true})
+    # @x_range.set(range_info.xr, {silent:true})
+    # @y_range.set(range_info.yr, {silent:true})
+    @x_range.set(range_info.xr)
+    @y_range.set(range_info.yr)
 
     f = uniq_listener_fs[0]
     for ctx in uniq_contexts
       ctx.is_paused = false
-      try
-        ctx.xmapper.properties.mapper_state.callbacks.propchange()
-        ctx.ymapper.properties.mapper_state.callbacks.propchange()
-      catch err
-        "somehow some listneres don't have x or ymappers'"
+      # try
+      #   ctx.xmapper.properties.mapper_state.callbacks.propchange()
+      #   ctx.ymapper.properties.mapper_state.callbacks.propchange()
+      # catch err
+      #   "somehow some listneres don't have x or ymappers'"
       ctx.request_render()
-  update_range : (range_info) ->
+  update_range2 : (range_info) ->
     @x_range.set(range_info.xr)
     @y_range.set(range_info.yr)
 
