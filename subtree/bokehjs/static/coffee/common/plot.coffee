@@ -206,7 +206,17 @@ class PlotView extends ContinuumView
 
     return [x, y]
 
-  update_range : (range_info) ->
+  update_range_fast : (range_info) ->
+    
+    """this runs silent updates, then finds all listeners and manually
+    triggers them in one loop previously all listeners would be
+    triggered on the xrange, then all of those same plots would be
+    triggered again on the yrange.  by grouping them together, they
+    are triggered only once.
+
+    there are problems with this though.  look at http://localhost:5000/demo/scatter
+    in the bokehjs demoserver.  use the zoom tool and notice how the axes actually shrink
+         """
     contexts = _.pluck(@x_range._events.change, "ctx")
     contexts = contexts.concat(_.pluck(@y_range._events.change, "ctx"))
     listener_fs = _.pluck(@x_range._events.change, "callback")
@@ -235,6 +245,9 @@ class PlotView extends ContinuumView
       catch err
         "somehow some listneres don't have x or ymappers'"
       ctx.request_render()
+  update_range : (range_info) ->
+    @x_range.set(range_info.xr)
+    @y_range.set(range_info.yr)
 
   build_tools: () ->
     return build_views(@tools, @mget_obj('tools'), @view_options())

@@ -10812,13 +10812,6 @@ _.setdefault = function(obj, key, value){
 
     HasProperties.prototype.get = function(prop_name) {
       var computed, getter, prop_spec;
-      if (window.in_render) {
-        if (_.has(window.prop_count, prop_name)) {
-          window.prop_count[prop_name] += 1;
-        } else {
-          window.prop_count[prop_name] = 1;
-        }
-      }
       if (_.has(this.properties, prop_name)) {
         prop_spec = this.properties[prop_name];
         if (prop_spec.use_cache && this.has_cache(prop_name)) {
@@ -11084,8 +11077,6 @@ _.setdefault = function(obj, key, value){
   exports.HasParent = HasParent;
 
   exports.build_views = build_views;
-
-  window.prop_count = {};
 
 }).call(this);
 }, "common/affine": function(exports, require, module) {(function() {
@@ -12704,7 +12695,9 @@ _.setdefault = function(obj, key, value){
       return [x, y];
     };
 
-    PlotView.prototype.update_range = function(range_info) {
+    PlotView.prototype.update_range_fast = function(range_info) {
+      "this runs silent updates, then finds all listeners and manually\ntriggers them in one loop previously all listeners would be\ntriggered on the xrange, then all of those same plots would be\ntriggered again on the yrange.  by grouping them together, they\nare triggered only once.\n\nthere are problems with this though.  look at http://localhost:5000/demo/scatter\nin the bokehjs demoserver.  use the zoom tool and notice how the axes actually shrink";
+
       var contexts, ctx, f, listener_fs, uniq_contexts, uniq_listener_fs, _i, _j, _len, _len1, _results;
       contexts = _.pluck(this.x_range._events.change, "ctx");
       contexts = contexts.concat(_.pluck(this.y_range._events.change, "ctx"));
@@ -12732,11 +12725,21 @@ _.setdefault = function(obj, key, value){
       for (_j = 0, _len1 = uniq_contexts.length; _j < _len1; _j++) {
         ctx = uniq_contexts[_j];
         ctx.is_paused = false;
-        ctx.xmapper.properties.mapper_state.callbacks.propchange();
-        ctx.ymapper.properties.mapper_state.callbacks.propchange();
+        try {
+          ctx.xmapper.properties.mapper_state.callbacks.propchange();
+          ctx.ymapper.properties.mapper_state.callbacks.propchange();
+        } catch (err) {
+          "somehow some listneres don't have x or ymappers'";
+
+        }
         _results.push(ctx.request_render());
       }
       return _results;
+    };
+
+    PlotView.prototype.update_range = function(range_info) {
+      this.x_range.set(range_info.xr);
+      return this.y_range.set(range_info.yr);
     };
 
     PlotView.prototype.build_tools = function() {
@@ -12830,7 +12833,6 @@ _.setdefault = function(obj, key, value){
     PlotView.prototype.render = function(force) {
       var have_new_mapper_state, hpadding, k, level, pr, renderers, sx, sy, sym, th, title, v, xms, yms, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3;
       PlotView.__super__.render.call(this);
-      window.in_render = true;
       window.render_count += 1;
       this.requested_padding = {
         top: 0,
@@ -12917,9 +12919,8 @@ _.setdefault = function(obj, key, value){
         sx = this.view_state.get('outer_width') / 2;
         sy = th;
         this.title_props.set(this.ctx, {});
-        this.ctx.fillText(title, sx, sy);
+        return this.ctx.fillText(title, sx, sy);
       }
-      return window.in_render = false;
     };
 
     return PlotView;
@@ -24157,6 +24158,10 @@ _.setdefault = function(obj, key, value){
       SetBasepoint: "_start_selecting",
       UpdatingMouseMove: "_selecting",
       deactivated: "_stop_selecting"
+    };
+
+    SelectionToolView.prototype.pause = function() {
+      return "";
     };
 
     SelectionToolView.prototype.mouse_coords = function(e, x, y) {
