@@ -14,7 +14,7 @@ logger = logging.getLogger(__file__)
 
 from bokeh.properties import (HasProps, MetaHasProps, Any, Dict, Enum,
         Either, Float, Instance, Int, List, String, Color, Pattern, Percent,
-        Size, LineProps, FillProps, TextProps, Include)
+        Size, LineProps, FillProps, TextProps, Include, Bool)
 
 class Viewable(MetaHasProps):
     """ Any plot object (Data Model) which has its own View Model in the
@@ -158,7 +158,7 @@ class PlotObject(HasProps):
     __metaclass__ = Viewable
 
     session = Instance   # bokeh.session.Session
-
+    hide = Bool(False)
     def __init__(self, *args, **kwargs):
         # Eventually should use our own memo instead of storing
         # an attribute on the class
@@ -573,7 +573,8 @@ class Plot(PlotObject):
     min_border_left = Int(50)
     min_border_right = Int(50)
     min_border = Int(50)
-    script_inject_snippet = String("")
+    hide = String("false")
+    script_inject_snippet = String("paddy")
     def vm_props(self, *args, **kw):
         # FIXME: We need to duplicate the height and width into canvas and
         # outer height/width.  This is a quick fix for the gorpiness, but this

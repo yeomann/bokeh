@@ -259,7 +259,7 @@ def curplot():
     """
     return _config["curplot"]
 
-def show(browser=None, new="tab"):
+def show(browser=None, new="tab", open_browser=True):
     """ 'shows' the current plot, by auto-raising the window or tab
     displaying the current plot (for file/server output modes) or displaying
     it in an output cell (IPython notebook).
@@ -283,14 +283,16 @@ def show(browser=None, new="tab"):
         controller = webbrowser
     if output_type == "file":
         session.save()
-        controller.open("file://" + os.path.abspath(_config["output_file"]),
-                            new=new_param)
+        page_url = "file://" + os.path.abspath(_config["output_file"])
     elif output_type == "server":
         session.store_all()
-        controller.open(_config["output_url"] + "/bokeh", new=new_param)
+        page_url = _config["output_url"] + "/bokeh"
 
-    elif output_type == "notebook":
+    if output_type == "notebook":
         session.show()
+    elif open_browser:
+        controller.open(page_url, new=new_param)
+
 
 def save(filename=None):
     """ Updates the file or plot server that contains this plot.
@@ -802,8 +804,10 @@ def gridplot(plot_arrangement, name=False):
     # Walk the plot_arrangement and remove them from the plotcontext,
     # so they don't show up twice
     session = _config["session"]
-    session.plotcontext.children = list(set(session.plotcontext.children) - \
+    plot_children = list(set(session.plotcontext.children) - \
                 set(itertools.chain.from_iterable(plot_arrangement)))
+    for pl in plot_children:
+        pl.hide = "true"
     return grid, [grid]
 
 

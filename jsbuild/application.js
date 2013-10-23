@@ -13177,6 +13177,10 @@ _.setdefault = function(obj, key, value){
       for (index = _i = 0, _len = _ref1.length; _i < _len; index = ++_i) {
         modelref = _ref1[index];
         view = this.views[modelref.id];
+        console.log(modelref.id, "hide:", view.model.get('hide'));
+        if (view.model.get('hide') && view.model.get('hide') === 'true') {
+          continue;
+        }
         node = $("<div class='jsp' data-plot_num='" + index + "'></div>");
         this.$el.append(node);
         node.append($("<a class='plotclose'>[close]</a>"));
@@ -26251,7 +26255,7 @@ _.setdefault = function(obj, key, value){
 
 }).call(this);
 }, "tools/embed_tool": function(exports, require, module) {(function() {
-  var ButtonEventGenerator, EmbedTool, EmbedToolView, EmbedTools, HasParent, base, tool,
+  var ButtonEventGenerator, EmbedTool, EmbedToolView, EmbedTools, HasParent, base, escapeHTML, tool,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -26262,6 +26266,10 @@ _.setdefault = function(obj, key, value){
   base = require("../base");
 
   HasParent = base.HasParent;
+
+  escapeHTML = function(unsafe_str) {
+    return unsafe_str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;').replace(/\'/g, '&#39;');
+  };
 
   EmbedToolView = (function(_super) {
 
@@ -26294,7 +26302,7 @@ _.setdefault = function(obj, key, value){
       doc_id = this.plot_model.get('doc');
       doc_apikey = this.plot_model.get('docapikey');
       baseurl = this.plot_model.get('baseurl');
-      script_inject_escaped = this.plot_model.get('script_inject_escaped');
+      script_inject_escaped = escapeHTML(this.plot_model.get('script_inject_snippet'));
       modal = "<div id=\"embedModal\" class=\"bokeh\">\n  <div  class=\"modal\" role=\"dialog\" aria-labelledby=\"embedLabel\" aria-hidden=\"true\">\n    <div class=\"modal-header\">\n      <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>\n      <h3 id=\"dataConfirmLabel\"> HTML Embed code</h3></div><div class=\"modal-body\">\n      <div class=\"modal-body\">\n        " + script_inject_escaped + "\n      </div>\n    </div>\n    <div class=\"modal-footer\">\n      <button class=\"btn\" data-dismiss=\"modal\" aria-hidden=\"true\">Close</button>\n    </div>\n  </div>\n</div>";
       $('body').append(modal);
       $('#embedModal > .modal').on('hidden', function() {

@@ -23,7 +23,7 @@ def grid_example():
         x, y, 10, 20, 0.6, 4.1, 
         inner_radius_units="screen", outer_radius_units = "screen",
         color="#8888ee", tools="pan,zoom,resize", title="annular_wedge",
-        name="glyphs_example")
+        name="glyphs_example", hide="true")
     bez = bezier(x, y, x+0.2, y, x+0.1, y+0.1, x-0.1, y-0.1, 
            color="#8888ee", tools="pan,zoom,resize", title="bezier")
     q = quad(x, x-0.5, y, y-0.5, 
@@ -34,4 +34,4 @@ def grid_example():
 if __name__ == "__main__":
     grid_example()
     # open a browser
-    show()
+    show(open_browser=False)

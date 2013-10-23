@@ -54,19 +54,28 @@ class PlotContextView extends ContinuumView
     return false
 
   render: () ->
+    
     super()
     @build_children()
     for own key, val of @views
       val.$el.detach()
     @$el.html('')
     numplots = _.keys(@views).length
+
     @$el.append("<div>You have #{numplots} plots</div>")
     @$el.append("<div><a class='closeall' href='#'>Close All Plots</a></div>")
     @$el.append("<br/>")
     to_render = []
     tab_names = {}
     for modelref, index in @mget('children')
+
       view = @views[modelref.id]
+      console.log(modelref.id, "hide:", view.model.get('hide'))
+      if view.model.get('hide') and view.model.get('hide') == 'true'
+        #if this plot object isn't meant to be directly displayed (as
+        #in it is part of a gridplot), don't inject it into the dom
+        #debugger;
+        continue
       node = $("<div class='jsp' data-plot_num='#{index}'></div>"  )
       @$el.append(node)
       node.append($("<a class='plotclose'>[close]</a>"))

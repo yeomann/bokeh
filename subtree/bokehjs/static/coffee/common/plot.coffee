@@ -261,6 +261,7 @@ class PlotView extends ContinuumView
 
   render_init: () ->
     # TODO use template
+    
     @$el.append($("""
       <div class='button_bar btn-group pull-top'/>
       <div class='plotarea'>
@@ -272,7 +273,6 @@ class PlotView extends ContinuumView
     @button_bar = @$el.find('.button_bar')
     @canvas_wrapper = @$el.find('.bokeh_canvas_wrapper')
     @canvas = @$el.find('canvas.bokeh_canvas')
-
 
   render_canvas: (full_render=true) ->
     @ctx = @canvas[0].getContext('2d')

@@ -96,7 +96,6 @@ load_models = (modelspecs)->
 
   # split out old and new models into arrays of
   # `[[collection, attributes], [collection, attributes]]`
-
   for model in modelspecs
     coll = Collections(model['type'])
     attrs = model['attributes']
