@@ -199,5 +199,4 @@ segment(x0, y0, x1, y1, line_color=colors, line_width=2)
 multi_line(xs, ys, line_color="#ee6666", line_width=2, line_alpha=0.8, name="vector example")
 
 
-if __name__ == "__main__":
-    show()  # open a browser
+show()  # open a browser

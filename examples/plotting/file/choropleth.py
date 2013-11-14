@@ -33,5 +33,4 @@ patches(county_xs, county_ys, fill_color=county_colors, fill_alpha=0.7,
 patches(state_xs, state_ys, fill_alpha=0.0, line_color="#884444", 
         line_width=2, name="choropleth")
 
-if __name__ == "__main__":
-    show()
+show()

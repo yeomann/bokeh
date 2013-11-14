@@ -45,7 +45,5 @@ ygrid()[0].grid_line_dash=""
 ygrid()[0].grid_line_alpha=0.3
 
 
-
-if __name__ == "__main__":
-    show()  # open a browser
+show()  # open a browser
 

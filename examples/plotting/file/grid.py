@@ -34,6 +34,4 @@ q = quad(x, x-0.5, y, y-0.5,
      width=width, height=height)
 gridplot([[l,aw],[bez,q]])
 
-if __name__ == "__main__":
-    # open a browser
-    show()
+show()  # open a browser    

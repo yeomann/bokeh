@@ -52,7 +52,4 @@ wedge(x, y, 15, 0.6, 4.1, radius_units="screen",
           color="#8888ee", tools="pan,zoom,resize", title="wedge",
           name="glyphs_wedge")
 
-if __name__ == "__main__":
-    # open a browser
-    show()
-
+show()  # open a browser

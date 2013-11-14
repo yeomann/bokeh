@@ -22,6 +22,5 @@ rect(
 rect(x, y, 0.05, 0.1, color="#4444aa", angle=-np.pi/6, tools="pan,zoom,resize",
     name="rect_example4")
 
-if __name__ == "__main__":
-    # open a browser
-    show()
+show()  # open a browser
+    

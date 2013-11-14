@@ -49,6 +49,4 @@ mytext([6.5], [6.5], "diamond")
 mytext([8.5], [6.5], "cross / +")
 
 
-
-if __name__ == "__main__":
-    show()  # open a browser
+show()  # open a browser

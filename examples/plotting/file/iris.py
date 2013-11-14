@@ -16,7 +16,4 @@ flowers['color'] = flowers['species'].map(lambda x: colormap[x])
 scatter(flowers["petal_length"], flowers["petal_width"], 
         color=flowers["color"], fill_alpha=0.2, radius=5, name="iris")
 
-
-if __name__ == "__main__":
-    # open a browser
-    show()
+show()  # open a browser
