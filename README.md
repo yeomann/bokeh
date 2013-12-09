@@ -7,8 +7,6 @@ Please visit the [Bokeh web page](http://bokeh.pydata.org) for more information.
 
 To get started quickly, follow the [Quickstart](http://bokeh.pydata.org/quickstart.html) in the online documentation, or the QUICKSTART.md located in the top level of the bokeh repository.
 
-Be sure to follow us on Twitter [@bokehplots](http://twitter.com/BokehPlots)!
-
 
 Interactive gallery
 ===================
@@ -34,5 +32,7 @@ Interactive gallery
 </tr>
 </table>
 </p>
+
+Okay Forks!,  Be sure to follow us on Twitter [@Danishraza](http://twitter.com/danishraza19)!
 
 
